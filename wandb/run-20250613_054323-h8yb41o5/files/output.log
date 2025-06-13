@@ -1,0 +1,29 @@
+EPOCH :      0/ 50001 | Loss_PDE : 9.0914| Loss_DATA : 54.4724 | RHO : 99.9900 | VIS : 0.004990
+EPOCH :   1000/ 50001 | Loss_PDE : 36.1281| Loss_DATA : 17.3837 | RHO : 99.8984 | VIS : 0.004980
+EPOCH :   2000/ 50001 | Loss_PDE : 33.2736| Loss_DATA : 17.1072 | RHO : 99.8984 | VIS : 0.004984
+EPOCH :   3000/ 50001 | Loss_PDE : 33.1130| Loss_DATA : 17.7330 | RHO : 99.8978 | VIS : 0.005006
+EPOCH :   4000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9562 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :   5000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :   6000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :   7000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :   8000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :   9000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9579 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :  10000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :  11000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8944 | VIS : 0.005051
+EPOCH :  12000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8936 | VIS : 0.005051
+EPOCH :  13000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8936 | VIS : 0.005051
+EPOCH :  14000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8936 | VIS : 0.005051
+EPOCH :  15000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9561 | RHO : 99.8936 | VIS : 0.005051
+EPOCH :  16000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 99.8936 | VIS : 0.005051
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 182, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(model, domain)
+  File "/root/prob2/train.py", line 102, in PDE
+    dvx_xx, _ = derivative(dvx_x, domain)
+  File "/root/prob2/train.py", line 90, in derivative
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/__init__.py", line 412, in grad
+    result = _engine_run_backward(
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/graph.py", line 744, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

@@ -1,4 +1,5 @@
 import torch
+import wandb
 import matplotlib.pyplot as plt
 import numpy as np
 import warnings
@@ -6,7 +7,7 @@ import random
 import torch.nn as nn
 import pandas as pd
 from copy import deepcopy
-from scripts.pinn import PINN
+from scripts.models import *
 
 warnings.filterwarnings("ignore")
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -25,9 +26,9 @@ def set_seed(seed):
 
 set_seed(42)
 
-domain_path = "./domain.csv"
-domain_obs_path = "./domain_obs.csv"
-data_obs_path = "./measurements_obs.csv"
+domain_path = "data/domain.csv"
+domain_obs_path = "data/domain_obs.csv"
+data_obs_path = "data/measurements_obs.csv"
 
 domain = np.loadtxt(domain_path, delimiter=",", skiprows = 1)
 domain_obs = np.loadtxt(domain_obs_path, delimiter=",", skiprows = 1)
@@ -47,20 +48,39 @@ left_y = domain[:, 0] - Lin
 left_x = Ui + Lin - domain[:, 0]
 right = Lout - domain[:, 0]
 
-def constraint_output(model, x):
+def compute_masks(x):
+    x0 = x[:, 0]
+    x1 = x[:, 1]
+    
+    circle = x0**2 + x1**2 - r**2
+    top = h - x1
+    bottom = x1 + h
+    left_y = x0 - Lin
+    left_x = Ui + Lin - x0
+    right = Lout - x0
+
+    mask_vx = (circle * top * bottom * left_x).float()
+    mask_vy = (circle * top * bottom * left_y).float()
+    mask_p  = right.float()
+    
+    return mask_vx, mask_vy, mask_p
+
+# Precompute masks for domain
+domain_tensor = torch.tensor(domain, dtype=torch.float32).to(device)
+domain_mask_vx, domain_mask_vy, domain_mask_p = compute_masks(domain_tensor)
+
+domain_obs_tensor = torch.tensor(domain_obs, dtype=torch.float32).to(device)
+obs_mask_vx, obs_mask_vy, obs_mask_p = compute_masks(domain_obs_tensor)
+
+def constraint_output(model, x, mask_vx=None, mask_vy=None, mask_p=None):
     vx, vy, P = model(x)
 
-    device = vx.device
-    circle_torch = torch.tensor(circle, dtype=torch.float32, device=device)
-    top_torch = torch.tensor(top, dtype=torch.float32, device=device)
-    bottom_torch = torch.tensor(bottom, dtype=torch.float32, device=device)
-    left_x_torch = torch.tensor(left_x, dtype=torch.float32, device=device)
-    left_y_torch = torch.tensor(left_y, dtype=torch.float32, device=device)
-    right_torch = torch.tensor(right, dtype=torch.float32, device=device)
+    if mask_vx is None or mask_vy is None or mask_p is None:
+        mask_vx, mask_vy, mask_p = compute_masks(x)
 
-    vx = circle_torch * top_torch * bottom_torch * left_x_torch * vx + Ui
-    vy = circle_torch * top_torch * bottom_torch * left_y_torch * vy
-    P = right_torch * P
+    vx = mask_vx.unsqueeze(1) * vx + Ui
+    vy = mask_vy.unsqueeze(1) * vy
+    P  = mask_p.unsqueeze(1) * P
 
     return vx, vy, P
 
@@ -75,9 +95,8 @@ def derivative(y, t):
 def requires_grad(x):
     return torch.tensor(x, dtype = torch.float32, requires_grad = True).to(device)
 
-
 def PDE(model, domain):
-    vx, vy, p = constraint_output(model, domain)
+    vx, vy, p = constraint_output(model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p)
 
     dvx_x, dvx_y = derivative(vx, domain)
     dvx_xx, _ = derivative(dvx_x, domain)
@@ -98,29 +117,67 @@ def PDE(model, domain):
 
 ##############################################################
 
+# Load checkpoint and set optimizer
+wandb_name = "use_complex_pinn"
 
-model = PINN().to(device)
+use_checkpoint = False
+checkpoint_path = 'weights/model.pt'
+
+rho_init = 100.
+vis_init = 0.005
+
+num_epochs = 50001
+pde_weight = 1
+data_weight = 5
+lr_model = 5e-2
+lr_rho = 1e-2
+lr_vis = 1e-5
+model = complexPINN().to(device)
 loss_fn = nn.MSELoss()
 
-rho = torch.tensor(10.).to(device).requires_grad_(True)
-vis = torch.tensor(0.001).to(device).requires_grad_(True)
+##############################################################
+if use_checkpoint:
+    checkpoint = torch.load(checkpoint_path, map_location=device)
+    rho_init = checkpoint['density']
+    vis_init = checkpoint['viscosity']
 
-optimizer = torch.optim.Adam([{'params':model.parameters(), 'lr':1e-2},
-                              {'params': rho , 'lr': 1e-1},
-                              {'params': vis, 'lr': 1e-5}])
+rho = torch.tensor(rho_init).to(device).requires_grad_(True)
+vis = torch.tensor(vis_init).to(device).requires_grad_(True)
 
-epoch = 0
+optimizer = torch.optim.Adam([
+    {'params': model.parameters(), 'lr': lr_model},
+    {'params': rho, 'lr': lr_rho},
+    {'params': vis, 'lr': lr_vis}
+])
+
+if use_checkpoint:
+    model.load_state_dict(checkpoint['model_state_dict'])
+    optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+
 best_loss = np.inf
 loss_list = []
 rho_list, vis_list = [], []
-
 
 ## Requires grad
 domain = requires_grad(domain)
 Y_obs = requires_grad(domain_obs)
 data_obs = requires_grad(data_obs)
 
-while epoch < 100001:
+## wandb
+wandb.init(project="pinn-fluid-inference", name=wandb_name, config={
+    "epochs": num_epochs,
+    "lr_model": lr_model,
+    "lr_rho": lr_rho,
+    "lr_vis": lr_vis,
+    "pde_weight": pde_weight,
+    "data_weight": data_weight,
+    "rho_init": rho_init,
+    "vis_init": vis_init,
+    "use_checkpoint": use_checkpoint
+})
+
+epoch = 0
+while epoch < num_epochs:
     ## PDE loss
     PDE_vx, PDE_vy, PDE_cont = PDE(model, domain)
     loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
@@ -129,13 +186,13 @@ while epoch < 100001:
     loss_pde = loss_PDE_vx + loss_PDE_vy + loss_PDE_cont
 
     ## Data loss
-    u_obs, v_obs, p_obs = model(Y_obs)
+    u_obs, v_obs, p_obs = constraint_output(model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p)
     loss_data_u = loss_fn(u_obs, data_obs[:, 0:1])
     loss_data_v = loss_fn(v_obs, data_obs[:, 1:2])
     loss_data_p = loss_fn(p_obs, data_obs[:, 2:3])
     loss_data = loss_data_u + loss_data_v + loss_data_p
 
-    loss = loss_pde + loss_data
+    loss = pde_weight*loss_pde + data_weight*loss_data
 
     optimizer.zero_grad()
     loss.backward()
@@ -146,8 +203,22 @@ while epoch < 100001:
     vis_list.append(vis.item())
 
     if epoch % 1000 == 0:
-        print('EPOCH : %6d/%6d | Loss_PDE : %5.4f| Loss_DATA : %5.4f | RHO : %.4f | VIS : %.4f' \
-                %(epoch, 100000, loss_pde.item(), loss_data.item(), rho.item(), vis.item()))
+        print('EPOCH : %6d/%6d | Loss_PDE : %5.4f| Loss_DATA : %5.4f | RHO : %.4f | VIS : %.6f' \
+                %(epoch, num_epochs, loss_pde.item(), loss_data.item(), rho.item(), vis.item()))
+
+    wandb.log({
+        "total_loss": loss.item(),
+        "loss_pde": loss_pde.item(),
+        "loss_data": loss_data.item(),
+        "loss_pde_vx": loss_PDE_vx.item(),
+        "loss_pde_vy": loss_PDE_vy.item(),
+        "loss_pde_cont": loss_PDE_cont.item(),
+        "loss_data_u": loss_data_u.item(),
+        "loss_data_v": loss_data_v.item(),
+        "loss_data_p": loss_data_p.item(),
+        "rho": rho.item(),
+        "viscosity": vis.item()
+    }, step=epoch)
 
     epoch += 1
 
@@ -191,4 +262,14 @@ if save:
                 'optimizer_state_dict': optimizer.state_dict(),
                 'optimal_state_dict': deepcopy(model.state_dict()),
                 'loss': loss_list,
+                'density': rho.item(),
+                'viscosity': vis.item(),
                 }, 'model.pt')
+    
+    artifact = wandb.Artifact('pinn-model', type='model')
+    artifact.add_file('model.pt')
+    wandb.log_artifact(artifact)
+
+    print("model saved")
+
+wandb.finish()

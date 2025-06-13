@@ -1,0 +1,42 @@
+EPOCH :      0/ 50001 | Loss_PDE : 9.0914| Loss_DATA : 54.4724 | RHO : 99.9900 | VIS : 0.004990
+EPOCH :   1000/ 50001 | Loss_PDE : 4.0798| Loss_DATA : 32.1213 | RHO : 99.9017 | VIS : 0.004902
+EPOCH :   2000/ 50001 | Loss_PDE : 4.4578| Loss_DATA : 31.1300 | RHO : 99.9017 | VIS : 0.004903
+EPOCH :   3000/ 50001 | Loss_PDE : 5.0445| Loss_DATA : 29.3986 | RHO : 99.9017 | VIS : 0.004944
+EPOCH :   4000/ 50001 | Loss_PDE : 5.7839| Loss_DATA : 27.0698 | RHO : 99.9029 | VIS : 0.005081
+EPOCH :   5000/ 50001 | Loss_PDE : 5.3681| Loss_DATA : 27.8149 | RHO : 99.8969 | VIS : 0.005826
+EPOCH :   6000/ 50001 | Loss_PDE : 5.6387| Loss_DATA : 24.1773 | RHO : 99.8878 | VIS : 0.009826
+EPOCH :   7000/ 50001 | Loss_PDE : 6.1841| Loss_DATA : 19.3862 | RHO : 99.8659 | VIS : 0.013343
+EPOCH :   8000/ 50001 | Loss_PDE : 8.4550| Loss_DATA : 16.7703 | RHO : 99.8392 | VIS : 0.014965
+EPOCH :   9000/ 50001 | Loss_PDE : 4.6810| Loss_DATA : 20.7721 | RHO : 99.8331 | VIS : 0.015576
+EPOCH :  10000/ 50001 | Loss_PDE : 4.3633| Loss_DATA : 17.8503 | RHO : 99.8303 | VIS : 0.016720
+EPOCH :  11000/ 50001 | Loss_PDE : 3.3535| Loss_DATA : 13.0161 | RHO : 99.9374 | VIS : 0.018547
+EPOCH :  12000/ 50001 | Loss_PDE : 2.4816| Loss_DATA : 36.1849 | RHO : 99.9193 | VIS : 0.018857
+EPOCH :  13000/ 50001 | Loss_PDE : 6.5645| Loss_DATA : 27.8300 | RHO : 99.8505 | VIS : 0.020004
+EPOCH :  14000/ 50001 | Loss_PDE : 5.7353| Loss_DATA : 20.9206 | RHO : 99.8920 | VIS : 0.031987
+EPOCH :  15000/ 50001 | Loss_PDE : 7.2531| Loss_DATA : 20.4588 | RHO : 100.0046 | VIS : 0.046350
+EPOCH :  16000/ 50001 | Loss_PDE : 5.5474| Loss_DATA : 17.1991 | RHO : 100.1624 | VIS : 0.055985
+EPOCH :  17000/ 50001 | Loss_PDE : 9.5700| Loss_DATA : 22.6702 | RHO : 100.1719 | VIS : 0.061360
+EPOCH :  18000/ 50001 | Loss_PDE : 7.8859| Loss_DATA : 19.8755 | RHO : 100.1822 | VIS : 0.068064
+EPOCH :  19000/ 50001 | Loss_PDE : 5.6494| Loss_DATA : 28.1642 | RHO : 100.1260 | VIS : 0.071567
+EPOCH :  20000/ 50001 | Loss_PDE : 5.3957| Loss_DATA : 21.3809 | RHO : 100.1785 | VIS : 0.076899
+EPOCH :  21000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  22000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  23000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  24000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  25000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  26000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9573 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  27000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9557 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  28000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+EPOCH :  29000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 41.9556 | RHO : 100.1137 | VIS : 0.078451
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 182, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(model, domain)
+  File "/root/prob2/train.py", line 107, in PDE
+    _, dvy_yy = derivative(dvy_y, domain)
+  File "/root/prob2/train.py", line 90, in derivative
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/__init__.py", line 412, in grad
+    result = _engine_run_backward(
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/graph.py", line 744, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+KeyboardInterrupt

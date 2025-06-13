@@ -1,0 +1,15 @@
+EPOCH :      0/ 50001 | Loss_PDE : 0.0079| Loss_DATA : 62.0551 | RHO : 9.9900 | VIS : 0.004990
+EPOCH :   1000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 44.5935 | RHO : 9.9290 | VIS : 0.004929
+EPOCH :   2000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 44.6133 | RHO : 9.9290 | VIS : 0.004929
+EPOCH :   3000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 44.5936 | RHO : 9.9290 | VIS : 0.004929
+EPOCH :   4000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 44.5935 | RHO : 9.9290 | VIS : 0.004929
+EPOCH :   5000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 44.5944 | RHO : 9.9290 | VIS : 0.004929
+EPOCH :   6000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 44.5935 | RHO : 9.9290 | VIS : 0.004929
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 181, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(model, domain)
+  File "/root/prob2/train.py", line 101, in PDE
+    dvx_xx, _ = derivative(dvx_x, domain)
+  File "/root/prob2/train.py", line 89, in derivative
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
+KeyboardInterrupt

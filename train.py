@@ -51,7 +51,7 @@ right = Lout - domain[:, 0]
 def compute_masks(x):
     x0 = x[:, 0]
     x1 = x[:, 1]
-    
+
     circle = x0**2 + x1**2 - r**2
     top = h - x1
     bottom = x1 + h
@@ -59,11 +59,12 @@ def compute_masks(x):
     left_x = Lin - x0
     right = Lout - x0
 
-    mask_vx = (circle * top * bottom).float()
-    mask_vy = (circle * top * bottom * left_y).float()
-    mask_p  = right.float()
-    
-    return mask_vx, mask_vy, mask_p, left_x
+    return (
+        (circle * top * bottom).unsqueeze(1),                    # mask_vx
+        (circle * top * bottom * left_y).unsqueeze(1),          # mask_vy
+        right.unsqueeze(1),                                     # mask_p
+        left_x.unsqueeze(1),                                    # left_x
+    )
 
 # Precompute masks for domain
 domain_tensor = torch.tensor(domain, dtype=torch.float32).to(device)
@@ -72,17 +73,15 @@ domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x = compute_masks(dom
 domain_obs_tensor = torch.tensor(domain_obs, dtype=torch.float32).to(device)
 obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x = compute_masks(domain_obs_tensor)
 
-def constraint_output(model, x, mask_vx=None, mask_vy=None, mask_p=None, left_x=None):
+def constraint_output(model, x, mask_vx, mask_vy, mask_p, left_x):
     vx, vy, P = model(x)
 
-    if mask_vx is None or mask_vy is None or mask_p is None or left_x is None:
-        mask_vx, mask_vy, mask_p, left_x = compute_masks(x)
-
-    vx = mask_vx.unsqueeze(1) * (left_x * vx + Ui)
-    vy = mask_vy.unsqueeze(1) * vy
-    P  = mask_p.unsqueeze(1) * P
+    vx = mask_vx * (left_x * vx + Ui)
+    vy = mask_vy * vy
+    P  = mask_p * P
 
     return vx, vy, P
+
 
 ##############################################################
 
@@ -123,7 +122,7 @@ wandb_name = "fixed_complex_pinn"
 use_checkpoint = False
 checkpoint_path = 'weights/model.pt'
 
-rho_init = 100.
+rho_init = 10.
 vis_init = 0.005
 
 num_epochs = 50001
@@ -205,20 +204,20 @@ while epoch < num_epochs:
     if epoch % 1000 == 0:
         print('EPOCH : %6d/%6d | Loss_PDE : %5.4f| Loss_DATA : %5.4f | RHO : %.4f | VIS : %.6f' \
                 %(epoch, num_epochs, loss_pde.item(), loss_data.item(), rho.item(), vis.item()))
-
-    wandb.log({
-        "total_loss": loss.item(),
-        "loss_pde": loss_pde.item(),
-        "loss_data": loss_data.item(),
-        "loss_pde_vx": loss_PDE_vx.item(),
-        "loss_pde_vy": loss_PDE_vy.item(),
-        "loss_pde_cont": loss_PDE_cont.item(),
-        "loss_data_u": loss_data_u.item(),
-        "loss_data_v": loss_data_v.item(),
-        "loss_data_p": loss_data_p.item(),
-        "rho": rho.item(),
-        "viscosity": vis.item()
-    }, step=epoch)
+    if epoch > 200:
+        wandb.log({
+            "total_loss": loss.item(),
+            "loss_pde": loss_pde.item(),
+            "loss_data": loss_data.item(),
+            "loss_pde_vx": loss_PDE_vx.item(),
+            "loss_pde_vy": loss_PDE_vy.item(),
+            "loss_pde_cont": loss_PDE_cont.item(),
+            "loss_data_u": loss_data_u.item(),
+            "loss_data_v": loss_data_v.item(),
+            "loss_data_p": loss_data_p.item(),
+            "rho": rho.item(),
+            "viscosity": vis.item()
+        }, step=epoch)
 
     epoch += 1
 

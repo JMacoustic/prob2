@@ -1,0 +1,42 @@
+EPOCH :      0/ 50001 | Loss_PDE : 13737.4473| Loss_DATA : 62.0491 | RHO : 9.9900 | VIS : 0.004990
+EPOCH :   1000/ 50001 | Loss_PDE : 46907.9922| Loss_DATA : 63.7720 | RHO : 9.7066 | VIS : 0.004518
+EPOCH :   2000/ 50001 | Loss_PDE : 16797.5625| Loss_DATA : 64.2644 | RHO : 9.7066 | VIS : 0.004518
+EPOCH :   3000/ 50001 | Loss_PDE : 7759.2310| Loss_DATA : 62.6786 | RHO : 9.7066 | VIS : 0.004518
+EPOCH :   4000/ 50001 | Loss_PDE : 4231.6494| Loss_DATA : 60.1845 | RHO : 9.7066 | VIS : 0.004518
+EPOCH :   5000/ 50001 | Loss_PDE : 2440.3843| Loss_DATA : 56.2147 | RHO : 9.7066 | VIS : 0.004518
+EPOCH :   6000/ 50001 | Loss_PDE : 1329.6173| Loss_DATA : 51.4518 | RHO : 9.7064 | VIS : 0.004518
+EPOCH :   7000/ 50001 | Loss_PDE : 1155.8347| Loss_DATA : 47.6355 | RHO : 9.7062 | VIS : 0.004518
+EPOCH :   8000/ 50001 | Loss_PDE : 456.3475| Loss_DATA : 45.2288 | RHO : 9.7059 | VIS : 0.004518
+EPOCH :   9000/ 50001 | Loss_PDE : 4787.1924| Loss_DATA : 43.3861 | RHO : 9.7057 | VIS : 0.004518
+EPOCH :  10000/ 50001 | Loss_PDE : 160.5933| Loss_DATA : 42.4825 | RHO : 9.7053 | VIS : 0.004518
+EPOCH :  11000/ 50001 | Loss_PDE : 123.7097| Loss_DATA : 41.7752 | RHO : 9.7049 | VIS : 0.004518
+EPOCH :  12000/ 50001 | Loss_PDE : 72.2525| Loss_DATA : 40.6974 | RHO : 9.7045 | VIS : 0.004518
+EPOCH :  13000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 3692.6772 | RHO : 9.3467 | VIS : 0.004201
+EPOCH :  14000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 3692.6772 | RHO : 9.3467 | VIS : 0.004201
+EPOCH :  15000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 3692.6772 | RHO : 9.3467 | VIS : 0.004201
+EPOCH :  16000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 3692.6772 | RHO : 9.3467 | VIS : 0.004201
+EPOCH :  17000/ 50001 | Loss_PDE : 0.0000| Loss_DATA : 3692.6768 | RHO : 9.3467 | VIS : 0.004201
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 189, in <module>
+    u_obs, v_obs, p_obs = constraint_output(model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x)
+  File "/root/prob2/train.py", line 76, in constraint_output
+    vx, vy, P = model(x)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/root/prob2/scripts/models.py", line 36, in forward
+    output = self.net(x)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/activation.py", line 357, in forward
+    return torch.tanh(input)
+KeyboardInterrupt

@@ -41,18 +41,18 @@ h = 0.5
 r = 0.075
 Ui = 5
 
-circle = domain[:, 0]**2 + domain[:, 1]**2  - r**2
-top = h - domain[:, 1]
-bottom = domain[:, 1] - (- h) 
-left_y = domain[:, 0] - Lin
-left_x = Ui + Lin - domain[:, 0]
-right = Lout - domain[:, 0]
+# circle = torch.exp(-((domain[:, 0]**2 + domain[:, 1]**2  - r**2) / 0.01)**2)
+# top = h - domain[:, 1]
+# bottom = domain[:, 1] - (- h) 
+# left_y = domain[:, 0] - Lin
+# left_x = Ui + Lin - domain[:, 0]
+# right = Lout - domain[:, 0]
 
 def compute_masks(x):
     x0 = x[:, 0]
     x1 = x[:, 1]
 
-    circle = x0**2 + x1**2 - r**2
+    circle = torch.exp(-((x0**2 + x1**2 - r**2)/0.01)**2)
     top = h - x1
     bottom = x1 + h
     left_y = x0 - Lin
@@ -73,15 +73,15 @@ domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x = compute_masks(dom
 domain_obs_tensor = torch.tensor(domain_obs, dtype=torch.float32).to(device)
 obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x = compute_masks(domain_obs_tensor)
 
-def constraint_output(model, x, mask_vx, mask_vy, mask_p, left_x):
-    vx, vy, P = model(x)
+def constraint_output(u_model, P_model, x, mask_vx, mask_vy, mask_p, left_x):
+    vx, vy = u_model(x)
+    P = P_model(x)
 
     vx = mask_vx * (left_x * vx + Ui)
     vy = mask_vy * vy
     P  = mask_p * P
 
     return vx, vy, P
-
 
 ##############################################################
 
@@ -94,8 +94,8 @@ def derivative(y, t):
 def requires_grad(x):
     return torch.tensor(x, dtype = torch.float32, requires_grad = True).to(device)
 
-def PDE(model, domain):
-    vx, vy, p = constraint_output(model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+def PDE(u_model, P_model, domain):
+    vx, vy, p = constraint_output(u_model, P_model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
 
     dvx_x, dvx_y = derivative(vx, domain)
     dvx_xx, _ = derivative(dvx_x, domain)
@@ -128,10 +128,12 @@ vis_init = 0.005
 num_epochs = 50001
 pde_weight = 1
 data_weight = 5
-lr_model = 5e-2
+lr_u = 5e-2
+lr_P = 5e-2
 lr_rho = 1e-2
 lr_vis = 1e-5
-model = complexPINN().to(device)
+u_model = complexPINN(input_dim=2, output_dim=2).to(device)
+P_model = complexPINN(input_dim=2, output_dim=1).to(device)
 loss_fn = nn.MSELoss()
 
 ##############################################################
@@ -144,13 +146,15 @@ rho = torch.tensor(rho_init).to(device).requires_grad_(True)
 vis = torch.tensor(vis_init).to(device).requires_grad_(True)
 
 optimizer = torch.optim.Adam([
-    {'params': model.parameters(), 'lr': lr_model},
+    {'params': u_model.parameters(), 'lr': lr_u},
+    {'params': P_model.parameters(), 'lr': lr_P},
     {'params': rho, 'lr': lr_rho},
     {'params': vis, 'lr': lr_vis}
 ])
 
 if use_checkpoint:
-    model.load_state_dict(checkpoint['model_state_dict'])
+    u_model.load_state_dict(checkpoint['u_model_state_dict'])
+    P_model.load_state_dict(checkpoint['P_model_state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
 best_loss = np.inf
@@ -165,7 +169,8 @@ data_obs = requires_grad(data_obs)
 ## wandb
 wandb.init(project="pinn-fluid-inference", name=wandb_name, config={
     "epochs": num_epochs,
-    "lr_model": lr_model,
+    "lr_u": lr_u,
+    "lr_P": lr_P,
     "lr_rho": lr_rho,
     "lr_vis": lr_vis,
     "pde_weight": pde_weight,
@@ -178,14 +183,14 @@ wandb.init(project="pinn-fluid-inference", name=wandb_name, config={
 epoch = 0
 while epoch < num_epochs:
     ## PDE loss
-    PDE_vx, PDE_vy, PDE_cont = PDE(model, domain)
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain)
     loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
     loss_PDE_vy = loss_fn(PDE_vy, torch.zeros_like(PDE_vy))
     loss_PDE_cont = loss_fn(PDE_cont, torch.zeros_like(PDE_cont))
     loss_pde = loss_PDE_vx + loss_PDE_vy + loss_PDE_cont
 
     ## Data loss
-    u_obs, v_obs, p_obs = constraint_output(model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x)
+    u_obs, v_obs, p_obs = constraint_output(u_model, P_model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x)
     loss_data_u = loss_fn(u_obs, data_obs[:, 0:1])
     loss_data_v = loss_fn(v_obs, data_obs[:, 1:2])
     loss_data_p = loss_fn(p_obs, data_obs[:, 2:3])

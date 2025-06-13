@@ -13,8 +13,17 @@ class PINN(nn.Module):
     def forward(self, x):
         x = x.float()
         output = self.net(x)
-        vx, vy, p = output[:, 0:1], output[:, 1:2], output[:, 2:3]
-        return vx, vy, p
+        if output.shape[1] == 3:
+            vx, vy, p = output[:, 0:1], output[:, 1:2], output[:, 2:3]
+            return vx, vy, p
+        elif output.shape[1] == 2:
+            vx, vy = output[:, 0:1], output[:, 1:2]
+            return vx, vy
+        elif output.shape[1] == 1:
+            p = output[:, 0:1]
+            return p
+        else:
+            raise ValueError("Unexpected output dimension")
 
 class complexPINN(nn.Module):
     def __init__(self, input_dim=2, output_dim=3, hidden_dim=128, num_layers=6):
@@ -34,5 +43,14 @@ class complexPINN(nn.Module):
     def forward(self, x):
         x = x.float()
         output = self.net(x)
-        vx, vy, p = output[:, 0:1], output[:, 1:2], output[:, 2:3]
-        return vx, vy, p
+        if output.shape[1] == 3:
+            vx, vy, p = output[:, 0:1], output[:, 1:2], output[:, 2:3]
+            return vx, vy, p
+        elif output.shape[1] == 2:
+            vx, vy = output[:, 0:1], output[:, 1:2]
+            return vx, vy
+        elif output.shape[1] == 1:
+            p = output[:, 0:1]
+            return p
+        else:
+            raise ValueError("Unexpected output dimension")

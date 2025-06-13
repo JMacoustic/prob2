@@ -262,9 +262,9 @@ save = True
 if save:
     torch.save({
                 'epoch': epoch,
-                'model_state_dict': model.state_dict(),
+                'u_model_state_dict': u_model.state_dict(),
+                'P_model_state_dict': P_model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
-                'optimal_state_dict': deepcopy(model.state_dict()),
                 'loss': loss_list,
                 'density': rho.item(),
                 'viscosity': vis.item(),

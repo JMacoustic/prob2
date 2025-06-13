@@ -23,11 +23,12 @@ def compute_masks(x):
     x0 = x[:, 0]
     x1 = x[:, 1]
 
-    circle = x0**2 + x1**2 - r**2
+    circle =( 1- torch.exp(-((x0**2 + x1**2 - r**2)/0.1)**2))
+    #circle = (x0**2 + x1**2 - r**2)
     top = h - x1
     bottom = x1 + h
     left_y = x0 - Lin
-    left_x = Lin - x0
+    left_x = (Lin - x0)*0.1
     right = Lout - x0
 
     return (
@@ -44,8 +45,9 @@ domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x = compute_masks(dom
 domain_obs_tensor = torch.tensor(domain_obs, dtype=torch.float32).to(device)
 obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x = compute_masks(domain_obs_tensor)
 
-def constraint_output(model, x, mask_vx, mask_vy, mask_p, left_x):
-    vx, vy, P = model(x)
+def constraint_output(u_model, P_model, x, mask_vx, mask_vy, mask_p, left_x):
+    vx, vy = u_model(x)
+    P = P_model(x)
 
     vx = mask_vx * (left_x * vx + Ui)
     vy = mask_vy * vy
@@ -54,15 +56,21 @@ def constraint_output(model, x, mask_vx, mask_vy, mask_p, left_x):
     return vx, vy, P
 
 # Dummy model that outputs all ones
-class DummyModel(torch.nn.Module):
+class DummyModel1(torch.nn.Module):
     def forward(self, x):
         N = x.shape[0]
-        return torch.tensor((N, 1), device=x.device), torch.ones((N, 1), device=x.device), torch.ones((N, 1), device=x.device)
+        return torch.ones((N, 1), device=x.device)  # Return tensor of ones
 
-dummy_model = DummyModel()
+class DummyModel2(torch.nn.Module):
+    def forward(self, x):
+        N = x.shape[0]
+        return torch.ones((N, 1), device=x.device), torch.zeros((N, 1), device=x.device)
+
+dummy_u_model = DummyModel2()
+dummy_P_model = DummyModel1()
 
 # Get constraint output
-vx_out, vy_out, P_out = constraint_output(dummy_model, domain_tensor, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+vx_out, vy_out, P_out = constraint_output(dummy_u_model, dummy_P_model, domain_tensor, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
 
 # Convert to numpy for plotting
 x = domain_tensor[:, 0].cpu().numpy()

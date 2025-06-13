@@ -1,0 +1,15 @@
+{"time":"2025-06-13T06:52:17.748952407Z","level":"INFO","msg":"main: starting server","port-filename":"/tmp/tmpyyjb2in9/port-1584.txt","pid":1584,"log-level":0,"disable-analytics":false,"shutdown-on-parent-exit":false,"enable-dcgm-profiling":false}
+{"time":"2025-06-13T06:52:17.750629041Z","level":"INFO","msg":"Will exit if parent process dies.","ppid":1584}
+{"time":"2025-06-13T06:52:17.750634591Z","level":"INFO","msg":"server is running","addr":{"IP":"127.0.0.1","Port":39547,"Zone":""}}
+{"time":"2025-06-13T06:52:17.923580807Z","level":"INFO","msg":"connection: ManageConnectionData: new connection created","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T06:52:17.930437811Z","level":"INFO","msg":"handleInformInit: received","streamId":"0d4z9ygm","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T06:52:18.279262901Z","level":"INFO","msg":"handleInformInit: stream started","streamId":"0d4z9ygm","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:39.308379557Z","level":"INFO","msg":"handleInformFinish: finish message received","streamId":"0d4z9ygm","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:39.308781732Z","level":"INFO","msg":"handleInformFinish: stream closed","streamId":"0d4z9ygm","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:40.308110592Z","level":"INFO","msg":"handleInformTeardown: server teardown initiated","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:40.308161328Z","level":"INFO","msg":"handleInformTeardown: server shutdown complete","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:40.308170826Z","level":"INFO","msg":"server is shutting down"}
+{"time":"2025-06-13T07:14:40.30819926Z","level":"INFO","msg":"connection: closing","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:40.30833045Z","level":"INFO","msg":"connection: closed successfully","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:40.308387488Z","level":"INFO","msg":"connection: ManageConnectionData: connection closed","id":"127.0.0.1:55802"}
+{"time":"2025-06-13T07:14:40.308411113Z","level":"INFO","msg":"server is closed"}

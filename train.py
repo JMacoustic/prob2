@@ -118,7 +118,7 @@ def PDE(model, domain):
 ##############################################################
 
 # Load checkpoint and set optimizer
-wandb_name = "use_complex_pinn"
+wandb_name = "fixed_complex_pinn"
 
 use_checkpoint = False
 checkpoint_path = 'weights/model.pt'

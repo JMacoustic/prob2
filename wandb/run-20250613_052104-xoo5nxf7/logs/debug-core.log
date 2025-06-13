@@ -1,1 +1,13 @@
-/root/.cache/wandb/logs/core-debug-20250613_052104.log
+{"time":"2025-06-13T05:21:04.478510292Z","level":"INFO","msg":"main: starting server","port-filename":"/tmp/tmpv0i_mblh/port-13920.txt","pid":13920,"log-level":0,"disable-analytics":false,"shutdown-on-parent-exit":false,"enable-dcgm-profiling":false}
+{"time":"2025-06-13T05:21:04.480292701Z","level":"INFO","msg":"Will exit if parent process dies.","ppid":13920}
+{"time":"2025-06-13T05:21:04.48029728Z","level":"INFO","msg":"server is running","addr":{"IP":"127.0.0.1","Port":44517,"Zone":""}}
+{"time":"2025-06-13T05:21:04.652634507Z","level":"INFO","msg":"connection: ManageConnectionData: new connection created","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:21:04.658391884Z","level":"INFO","msg":"handleInformInit: received","streamId":"xoo5nxf7","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:21:05.000211841Z","level":"INFO","msg":"handleInformInit: stream started","streamId":"xoo5nxf7","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:25:59.496210481Z","level":"INFO","msg":"handleInformTeardown: server teardown initiated","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:25:59.496290613Z","level":"INFO","msg":"connection: closing","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:25:59.496316983Z","level":"INFO","msg":"server is shutting down"}
+{"time":"2025-06-13T05:25:59.496446479Z","level":"INFO","msg":"connection: closed successfully","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:26:00.664416937Z","level":"INFO","msg":"handleInformTeardown: server shutdown complete","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:26:00.664440232Z","level":"INFO","msg":"connection: ManageConnectionData: connection closed","id":"127.0.0.1:34770"}
+{"time":"2025-06-13T05:26:00.664452856Z","level":"INFO","msg":"server is closed"}

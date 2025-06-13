@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\train.py", line 182, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(model, domain)
+                               ^^^^^^^^^^^^^^^^^^
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\train.py", line 99, in PDE
+    vx, vy, p = constraint_output(model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\train.py", line 78, in constraint_output
+    if mask_vx is None or mask_vy is None or mask_p or left_x is None:
+                                             ^^^^^^
+RuntimeError: Boolean value of Tensor with more than one value is ambiguous

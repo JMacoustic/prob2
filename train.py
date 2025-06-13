@@ -33,11 +33,38 @@ domain = np.loadtxt(domain_path, delimiter=",", skiprows = 1)
 domain_obs = np.loadtxt(domain_obs_path, delimiter=",", skiprows = 1)
 data_obs = np.loadtxt(data_obs_path, delimiter=",", skiprows = 1)
 
-plt.scatter(domain[:, 0], domain[:, 1], s = 1, label = 'domain')
-plt.scatter(domain_obs[:, 0], domain_obs[:, 1], marker = 'x', linewidths = 1, s = 20, c = 'k')
-plt.axis('scaled')
-plt.legend()
-plt.show()
+###############boundary conditions###########################
+Lout = 1.5
+Lin = -0.5
+h = 0.5
+r = 0.075
+Ui = 5
+
+circle = domain[:, 0]**2 + domain[:, 1]**2  - r**2
+top = h - domain[:, 1]
+bottom = domain[:, 1] - (- h) 
+left_y = domain[:, 0] - Lin
+left_x = Ui + Lin - domain[:, 0]
+right = Lout - domain[:, 0]
+
+def constraint_output(model, x):
+    vx, vy, P = model(x)
+
+    device = vx.device
+    circle_torch = torch.tensor(circle, dtype=torch.float32, device=device)
+    top_torch = torch.tensor(top, dtype=torch.float32, device=device)
+    bottom_torch = torch.tensor(bottom, dtype=torch.float32, device=device)
+    left_x_torch = torch.tensor(left_x, dtype=torch.float32, device=device)
+    left_y_torch = torch.tensor(left_y, dtype=torch.float32, device=device)
+    right_torch = torch.tensor(right, dtype=torch.float32, device=device)
+
+    vx = circle_torch * top_torch * bottom_torch * left_x_torch * vx + Ui
+    vy = circle_torch * top_torch * bottom_torch * left_y_torch * vy
+    P = right_torch * P
+
+    return vx, vy, P
+
+##############################################################
 
 def derivative(y, t):
     df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
@@ -50,8 +77,7 @@ def requires_grad(x):
 
 
 def PDE(model, domain):
-
-    vx, vy, p = model(domain)
+    vx, vy, p = constraint_output(model, domain)
 
     dvx_x, dvx_y = derivative(vx, domain)
     dvx_xx, _ = derivative(dvx_x, domain)
@@ -68,6 +94,9 @@ def PDE(model, domain):
     pde_cont = dvx_x + dvy_y
 
     return pde_vx, pde_vy, pde_cont
+
+
+##############################################################
 
 
 model = PINN().to(device)
@@ -122,30 +151,34 @@ while epoch < 100001:
 
     epoch += 1
 
-with torch.no_grad():
-    vx_pred, vy_pred, p_pred = model(domain)
 
-vx_pred = vx_pred.cpu().numpy()
-vy_pred = vy_pred.cpu().numpy()
-p_pred = p_pred.cpu().numpy()
-domain_np = domain.detach().cpu().numpy()
 
-plt.figure(figsize=(6, 6))
-plt.quiver(domain_np[:, 0], domain_np[:, 1], vx_pred[:, 0], vy_pred[:, 0], scale=5)
-plt.title("Predicted Velocity Field")
-plt.xlabel("x")
-plt.ylabel("y")
-plt.axis('scaled')
-plt.show()
+##############################################################
 
-plt.figure(figsize=(6, 6))
-sc = plt.scatter(domain_np[:, 0], domain_np[:, 1], c=p_pred[:, 0], cmap='viridis', s=5)
-plt.colorbar(sc, label="Pressure")
-plt.title("Predicted Pressure Field")
-plt.xlabel("x")
-plt.ylabel("y")
-plt.axis('scaled')
-plt.show()
+# with torch.no_grad():
+#     vx_pred, vy_pred, p_pred = model(domain)
+
+# vx_pred = vx_pred.cpu().numpy()
+# vy_pred = vy_pred.cpu().numpy()
+# p_pred = p_pred.cpu().numpy()
+# domain_np = domain.detach().cpu().numpy()
+
+# plt.figure(figsize=(6, 6))
+# plt.quiver(domain_np[:, 0], domain_np[:, 1], vx_pred[:, 0], vy_pred[:, 0], scale=5)
+# plt.title("Predicted Velocity Field")
+# plt.xlabel("x")
+# plt.ylabel("y")
+# plt.axis('scaled')
+# plt.show()
+
+# plt.figure(figsize=(6, 6))
+# sc = plt.scatter(domain_np[:, 0], domain_np[:, 1], c=p_pred[:, 0], cmap='viridis', s=5)
+# plt.colorbar(sc, label="Pressure")
+# plt.title("Predicted Pressure Field")
+# plt.xlabel("x")
+# plt.ylabel("y")
+# plt.axis('scaled')
+# plt.show()
 
 print(f"\nFinal learned rho: {rho.item():.4f}")
 print(f"Final learned viscosity: {vis.item():.6f}")

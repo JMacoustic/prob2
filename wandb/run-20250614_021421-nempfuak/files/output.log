@@ -1,0 +1,7 @@
+EPOCH :      0/ 50001 | Loss_PDE : 0.0079| Loss_DATA : 62.0551 | RHO : 9.9900 | VIS : 0.004990
+Traceback (most recent call last):
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\plot_constraint.py", line 4, in <module>
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\train.py", line 182, in <module>
+    loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

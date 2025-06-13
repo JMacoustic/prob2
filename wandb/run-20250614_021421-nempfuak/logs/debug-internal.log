@@ -1,0 +1,15 @@
+{"time":"2025-06-14T02:14:21.9269105+09:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"C:\\Users\\juhye\\Desktop\\Current Files\\csmproject\\prob2\\wandb\\run-20250614_021421-nempfuak\\logs\\debug-core.log"}
+{"time":"2025-06-14T02:14:22.2483799+09:00","level":"INFO","msg":"created new stream","id":"nempfuak"}
+{"time":"2025-06-14T02:14:22.2483799+09:00","level":"INFO","msg":"stream: started","id":"nempfuak"}
+{"time":"2025-06-14T02:14:22.2489107+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"nempfuak"}
+{"time":"2025-06-14T02:14:22.2489107+09:00","level":"INFO","msg":"sender: started","stream_id":"nempfuak"}
+{"time":"2025-06-14T02:14:22.2489107+09:00","level":"INFO","msg":"handler: started","stream_id":"nempfuak"}
+{"time":"2025-06-14T02:14:22.6722243+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T02:14:31.4590575+09:00","level":"INFO","msg":"stream: closing","id":"nempfuak"}
+{"time":"2025-06-14T02:14:31.4590575+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T02:14:31.4590575+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T02:14:32.2245523+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T02:14:32.4902566+09:00","level":"INFO","msg":"handler: closed","stream_id":"nempfuak"}
+{"time":"2025-06-14T02:14:32.4902566+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"nempfuak"}
+{"time":"2025-06-14T02:14:32.4902566+09:00","level":"INFO","msg":"sender: closed","stream_id":"nempfuak"}
+{"time":"2025-06-14T02:14:32.4908987+09:00","level":"INFO","msg":"stream: closed","id":"nempfuak"}

@@ -39,9 +39,6 @@ plt.axis('scaled')
 plt.legend()
 plt.show()
 
-rho = torch.tensor(1000.).to(device).requires_grad_(True)
-vis = torch.tensor(1e-3).to(device).requires_grad_(True)
-
 def derivative(y, t):
     df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
     df_x = df[:, 0:1]
@@ -76,9 +73,12 @@ def PDE(model, domain):
 model = PINN().to(device)
 loss_fn = nn.MSELoss()
 
+rho = torch.tensor(10.).to(device).requires_grad_(True)
+vis = torch.tensor(0.001).to(device).requires_grad_(True)
+
 optimizer = torch.optim.Adam([{'params':model.parameters(), 'lr':1e-2},
-                              {'params': rho , 'lr': 1e-2},
-                              {'params': vis, 'lr': 1e-2}])
+                              {'params': rho , 'lr': 1e-1},
+                              {'params': vis, 'lr': 1e-5}])
 
 epoch = 0
 best_loss = np.inf
@@ -122,7 +122,35 @@ while epoch < 100001:
 
     epoch += 1
 
-save = False
+with torch.no_grad():
+    vx_pred, vy_pred, p_pred = model(domain)
+
+vx_pred = vx_pred.cpu().numpy()
+vy_pred = vy_pred.cpu().numpy()
+p_pred = p_pred.cpu().numpy()
+domain_np = domain.detach().cpu().numpy()
+
+plt.figure(figsize=(6, 6))
+plt.quiver(domain_np[:, 0], domain_np[:, 1], vx_pred[:, 0], vy_pred[:, 0], scale=5)
+plt.title("Predicted Velocity Field")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.axis('scaled')
+plt.show()
+
+plt.figure(figsize=(6, 6))
+sc = plt.scatter(domain_np[:, 0], domain_np[:, 1], c=p_pred[:, 0], cmap='viridis', s=5)
+plt.colorbar(sc, label="Pressure")
+plt.title("Predicted Pressure Field")
+plt.xlabel("x")
+plt.ylabel("y")
+plt.axis('scaled')
+plt.show()
+
+print(f"\nFinal learned rho: {rho.item():.4f}")
+print(f"Final learned viscosity: {vis.item():.6f}")
+
+save = True
 if save:
     torch.save({
                 'epoch': epoch,

@@ -118,6 +118,22 @@ while epoch < num_epochs:
 
     optimizer.zero_grad()
     loss.backward()
+
+    for name, param in u_model.named_parameters():
+        if param.grad is not None:
+            print(f"{name} grad norm: {param.grad.norm().item():.2e}")
+        else:
+            print(f"{name} grad is None!")
+
+    for name, param in P_model.named_parameters():
+        if param.grad is not None:
+            print(f"{name} grad norm: {param.grad.norm().item():.2e}")
+        else:
+            print(f"{name} grad is None!")
+
+    print(f"rho grad: {rho.grad}")
+    print(f"vis grad: {vis.grad}")
+
     optimizer.step()
 
     loss_list.append(loss.item())

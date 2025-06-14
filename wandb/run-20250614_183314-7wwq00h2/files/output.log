@@ -1,0 +1,12 @@
+EPOCH :      0/  3001 | Loss_PDE : 0.0022| Loss_DATA : 66.1718 | RHO : 9.9900 | VIS : 0.005010
+Traceback (most recent call last):
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\train.py", line 120, in <module>
+    loss.backward()
+  File "C:\Users\juhye\.pyenv\pyenv-win\versions\3.12.8\Lib\site-packages\torch\_tensor.py", line 626, in backward
+    torch.autograd.backward(
+  File "C:\Users\juhye\.pyenv\pyenv-win\versions\3.12.8\Lib\site-packages\torch\autograd\__init__.py", line 347, in backward
+    _engine_run_backward(
+  File "C:\Users\juhye\.pyenv\pyenv-win\versions\3.12.8\Lib\site-packages\torch\autograd\graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

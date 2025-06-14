@@ -20,6 +20,9 @@ def compute_masks(x):
     inlet_mask = left_r2 / (left_r2 + 0.01)
     right = Lout - x0
 
+    wall_mask = wall_mask.clamp(min=0.01)
+    inlet_mask = inlet_mask.clamp(min=0.01)
+
     mask_vy = (wall_mask * inlet_mask).unsqueeze(1)
     mask_vx = [mask_vy, (Ui * (1 - inlet_mask) * wall_mask).unsqueeze(1)]
     mask_p = right.unsqueeze(1)

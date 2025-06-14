@@ -4,7 +4,7 @@
   "checkpoint_path": "weights/model.pt",
   "rho_init": 10.0,
   "vis_init": 0.005,
-  "num_epochs": 50001,
+  "num_epochs": 3001,
   "pde_weight": 1,
   "data_weight": 5,
   "lr_u": 0.05,

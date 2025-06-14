@@ -41,10 +41,10 @@ data_obs_np = np.loadtxt(data_obs_path, delimiter=",", skiprows = 1)
 
 # Precompute masks for domain
 domain_tensor = torch.tensor(domain_np, dtype=torch.float32).to(device)
-domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x = compute_masks(domain_tensor)
+domain_mask_vx, domain_mask_vy, domain_mask_p = compute_masks(domain_tensor)
 
 domain_obs_tensor = torch.tensor(domain_obs_np, dtype=torch.float32).to(device)
-obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x = compute_masks(domain_obs_tensor)
+obs_mask_vx, obs_mask_vy, obs_mask_p = compute_masks(domain_obs_tensor)
 
 data_obs_tensor = torch.tensor(data_obs_np, dtype=torch.float32).to(device)
 
@@ -101,14 +101,14 @@ epoch = 0
 wandb.init(project="pinn-fluid-inference", name=wandb_name, config=config)
 while epoch < num_epochs:
     ## PDE loss
-    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p)
     loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
     loss_PDE_vy = loss_fn(PDE_vy, torch.zeros_like(PDE_vy))
     loss_PDE_cont = loss_fn(PDE_cont, torch.zeros_like(PDE_cont))
     loss_pde = loss_PDE_vx + loss_PDE_vy + loss_PDE_cont
 
     ## Data loss
-    u_obs, v_obs, p_obs = constraint_output(u_model, P_model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x)
+    u_obs, v_obs, p_obs = constraint_output(u_model, P_model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p)
     loss_data_u = loss_fn(u_obs, data_obs[:, 0:1])
     loss_data_v = loss_fn(v_obs, data_obs[:, 1:2])
     loss_data_p = loss_fn(p_obs, data_obs[:, 2:3])

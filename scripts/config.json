@@ -1,5 +1,5 @@
 {
-  "wandb_name": "fixed_complex_pinn",
+  "wandb_name": "newbc_complex_pinn",
   "use_checkpoint": false,
   "checkpoint_path": "weights/model.pt",
   "rho_init": 10.0,

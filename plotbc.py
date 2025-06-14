@@ -28,29 +28,33 @@ dummy_P_model = DummyModel1()
 vx_out, vy_out, P_out = constraint_output(dummy_u_model, dummy_P_model, domain_tensor, domain_mask_vx, domain_mask_vy, domain_mask_p)
 
 # Convert to numpy for plotting
+scale = 0.1
 x = domain_tensor[:, 0].cpu().numpy()
 y = domain_tensor[:, 1].cpu().numpy()
-vx_np = vx_out[:, 0].cpu().numpy()
-vy_np = vy_out[:, 0].cpu().numpy()
+vx_np = scale * vx_out[:, 0].cpu().numpy()
+vy_np = scale * vy_out[:, 0].cpu().numpy()
 p_np  = P_out[:, 0].cpu().numpy()
 
-# Plot velocity field
-plt.figure(figsize=(6, 6))
-plt.quiver(x, y, vx_np, vy_np, scale=5)
-plt.title("Constrained Velocity Field")
-plt.xlabel("x")
-plt.ylabel("y")
-plt.axis('equal')
-plt.grid(True)
-plt.show()
+fig, axes = plt.subplots(1, 2, figsize=(12, 6))
 
-# Optional: Pressure scatter plot
-plt.figure(figsize=(6, 6))
-plt.scatter(x, y, c=p_np, cmap='coolwarm', s=5)
-plt.title("Constrained Pressure Field")
-plt.xlabel("x")
-plt.ylabel("y")
-plt.axis('equal')
-plt.colorbar(label='Pressure')
-plt.grid(True)
+# Velocity field
+axes[0].quiver(x, y, vx_np, vy_np, scale=5)
+axes[0].set_title("Constrained Velocity Field")
+axes[0].set_xlabel("x")
+axes[0].set_ylabel("y")
+axes[0].axis('equal')
+axes[0].grid(True)
+
+# Pressure field
+sc = axes[1].scatter(x, y, c=p_np, cmap='coolwarm', s=5)
+axes[1].set_title("Constrained Pressure Field")
+axes[1].set_xlabel("x")
+axes[1].set_ylabel("y")
+axes[1].axis('equal')
+axes[1].grid(True)
+
+# Add colorbar
+cbar = fig.colorbar(sc, ax=axes[1], orientation='vertical', label='Pressure')
+
+plt.tight_layout()
 plt.show()

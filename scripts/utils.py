@@ -11,12 +11,12 @@ def compute_masks(x):
     x0 = x[:, 0]
     x1 = x[:, 1]
 
-    circle = torch.exp(-((x0**2 + x1**2 - r**2)/0.01)**2)
+    circle = 1- torch.exp(-((x0**2 + x1**2 - r**2)/0.01)**2)
     top = h - x1
     bottom = x1 + h
     wall_mask = (circle * top * bottom) / h**2
     
-    left_r2 = (Lin - x0)**2 + (x1)**2
+    left_r2 = torch.sqrt((Lin - x0)**2 + (x1)**2)
     inlet_mask = left_r2 / (left_r2 + 0.01)
     right = Lout - x0
 

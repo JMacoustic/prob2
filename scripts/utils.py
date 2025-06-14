@@ -11,25 +11,19 @@ def compute_masks(x):
     x0 = x[:, 0]
     x1 = x[:, 1]
 
-    circle = 1- torch.exp(-((x0**2 + x1**2 - r**2)/0.01)**2)
     top = h - x1
     bottom = x1 + h
-    wall_mask = (circle * top * bottom) / h**2
+    #circle = 1- torch.exp(-((x0**2 + x1**2 - r**2)/0.01)**2)
+    #wall_mask = (circle * top * bottom) / h**2
+    wall_mask = (top * bottom) / h**2
     
     left_r2 = torch.sqrt((Lin - x0)**2 + (x1)**2)
-    inlet_mask = left_r2 / (left_r2 + 0.01)
+    inlet_mask = left_r2 / (left_r2 + 0.1)
     right = Lout - x0
-
-    wall_mask = wall_mask.clamp(min=0.01)
-    inlet_mask = inlet_mask.clamp(min=0.01)
 
     mask_vy = (wall_mask * inlet_mask).unsqueeze(1)
     mask_vx = [mask_vy, (Ui * (1 - inlet_mask) * wall_mask).unsqueeze(1)]
     mask_p = right.unsqueeze(1)
-
-    # mask_vy = torch.ones((x.shape[0], 1), dtype=torch.float32, device=x.device)
-    # mask_vx = [mask_vy, torch.zeros((x.shape[0], 1), dtype=torch.float32, device=x.device)]
-    # mask_p  = torch.ones((x.shape[0], 1), dtype=torch.float32, device=x.device)
 
     return mask_vx, mask_vy, mask_p
 
@@ -70,4 +64,19 @@ def PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, doma
     pde_vy = rho * (vx * dvy_x + vy * dvy_y) + dp_y - vis * (dvy_xx + dvy_yy)
     pde_cont = dvx_x + dvy_y
 
-    return pde_vx, pde_vy, pde_cont
+    return pde_vx, pde_vy, pde_cont, vx, vy, p
+
+
+def circle_loss(vx, vy, x, r=0.075):
+    x0 = x[:, 0:1]
+    x1 = x[:, 1:2]
+
+    r_sq = x0**2 + x1**2
+    circle_mask = torch.exp(-((r_sq - r**2)/0.01)**2)  # peaked near circle
+
+    dot_product = vx * x0 + vy * x1  # radial component of velocity
+
+    loss = torch.mean((circle_mask * dot_product)**2)
+    return loss
+
+    

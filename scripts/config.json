@@ -1,14 +1,15 @@
 {
-  "wandb_name": "newmodel_pinn_10_lrhigher",
-  "use_checkpoint": true,
+  "wandb_name": "nocircle_weightones",
+  "use_checkpoint": false,
   "checkpoint_path": "weights/model_0614_9.pt",
   "rho_init": 10.0,
-  "vis_init": 0.001,
-  "num_epochs": 100001,
-  "pde_weight": [0.5, 1.5, 1],
-  "data_weight": [3, 5, 1],
+  "vis_init": 0.01,
+  "num_epochs": 50001,
+  "pde_weight": [10, 10, 10],
+  "data_weight": [5, 5, 1],
+  "bc_weight": 10000,
   "lr_u": 1e-2,
-  "lr_P": 1e-2,
-  "lr_rho": 1e-2,
-  "lr_vis": 1e-3
+  "lr_P": 1e-1,
+  "lr_rho": 1e-1,
+  "lr_vis": 1e-4
 }

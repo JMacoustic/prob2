@@ -57,6 +57,36 @@ class complexPINN(nn.Module):
             raise ValueError("Unexpected output dimension")
 
 class VelocityNet(nn.Module):
+    def __init__(self, input_dim=2, hidden_dim=256, num_layers=5):
+        super(VelocityNet, self).__init__()
+        layers = [nn.Linear(input_dim, hidden_dim), nn.Tanh()]
+        for _ in range(num_layers - 2):
+            layers.append(nn.Linear(hidden_dim, hidden_dim))
+            layers.append(nn.Tanh())
+        layers.append(nn.Linear(hidden_dim, 2))  # Output: vx, vy
+        self.net = nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = x.float()
+        out = self.net(x)
+        vx, vy = out[:, 0:1], out[:, 1:2]
+        return vx, vy
+
+class PressureNet(nn.Module):
+    def __init__(self, input_dim=2, hidden_dim=256, num_layers=5):
+        super(PressureNet, self).__init__()
+        layers = [nn.Linear(input_dim, hidden_dim), nn.Tanh()]
+        for _ in range(num_layers - 2):
+            layers.append(nn.Linear(hidden_dim, hidden_dim))
+            layers.append(nn.Tanh())
+        layers.append(nn.Linear(hidden_dim, 1))  # Output: pressure
+        self.net = nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = x.float()
+        return self.net(x)
+
+class VelocityNet_back(nn.Module):
     def __init__(self, input_dim=2, hidden_dim=256):
         super(VelocityNet, self).__init__()
         self.net = nn.Sequential(
@@ -71,7 +101,7 @@ class VelocityNet(nn.Module):
         vx, vy = out[:, 0:1], out[:, 1:2]
         return vx, vy
 
-class PressureNet(nn.Module):
+class PressureNet_back(nn.Module):
     def __init__(self, input_dim=2, hidden_dim=256):
         super(PressureNet, self).__init__()
         self.net = nn.Sequential(

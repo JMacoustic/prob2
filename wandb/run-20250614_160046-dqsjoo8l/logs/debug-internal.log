@@ -1,0 +1,16 @@
+{"time":"2025-06-14T16:00:46.557677928Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_160046-dqsjoo8l/logs/debug-core.log"}
+{"time":"2025-06-14T16:00:46.895981196Z","level":"INFO","msg":"stream: created new stream","id":"dqsjoo8l"}
+{"time":"2025-06-14T16:00:46.896029346Z","level":"INFO","msg":"stream: started","id":"dqsjoo8l"}
+{"time":"2025-06-14T16:00:46.896048733Z","level":"INFO","msg":"sender: started","stream_id":"dqsjoo8l"}
+{"time":"2025-06-14T16:00:46.89603653Z","level":"INFO","msg":"writer: Do: started","stream_id":"dqsjoo8l"}
+{"time":"2025-06-14T16:00:46.896073659Z","level":"INFO","msg":"handler: started","stream_id":"dqsjoo8l"}
+{"time":"2025-06-14T16:00:47.237731544Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T16:16:13.284390155Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T16:16:13.284630198Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T16:16:14.289300583Z","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading artifact pinn-model","runtime_seconds":1.007298423,"subtasks":[{"desc":"model.pt","runtime_seconds":0.106688563,"progress":"916.5KB/916.5KB"}]}],"total_operations":1}}
+{"time":"2025-06-14T16:16:16.729474994Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T16:16:17.579316993Z","level":"INFO","msg":"stream: closing","id":"dqsjoo8l"}
+{"time":"2025-06-14T16:16:17.579340107Z","level":"INFO","msg":"handler: closed","stream_id":"dqsjoo8l"}
+{"time":"2025-06-14T16:16:17.579354304Z","level":"INFO","msg":"writer: Close: closed","stream_id":"dqsjoo8l"}
+{"time":"2025-06-14T16:16:17.579365525Z","level":"INFO","msg":"sender: closed","stream_id":"dqsjoo8l"}
+{"time":"2025-06-14T16:16:17.579454563Z","level":"INFO","msg":"stream: closed","id":"dqsjoo8l"}

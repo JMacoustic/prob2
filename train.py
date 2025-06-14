@@ -58,6 +58,7 @@ vis_init = config["vis_init"]
 num_epochs = config["num_epochs"]
 pde_weight = config["pde_weight"]  # list[vx, vy, cont]
 data_weight = config["data_weight"]  # list[vx, vy, P]
+bc_weight = config["bc_weight"]  # float
 lr_u = config["lr_u"]
 lr_P = config["lr_P"]
 lr_rho = config["lr_rho"]
@@ -104,7 +105,7 @@ data_obs = requires_grad(data_obs_torch, device)
 wandb.init(project="pinn-fluid-inference", name=wandb_name, config=config)
 while epoch < num_epochs:
     ## PDE loss
-    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p)
+    PDE_vx, PDE_vy, PDE_cont, u_pred, v_pred, P_pred = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p)
     loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
     loss_PDE_vy = loss_fn(PDE_vy, torch.zeros_like(PDE_vy))
     loss_PDE_cont = loss_fn(PDE_cont, torch.zeros_like(PDE_cont))
@@ -117,26 +118,13 @@ while epoch < num_epochs:
     loss_data_p = loss_fn(p_obs, data_obs[:, 2:3])
     loss_data = data_weight[0]*loss_data_u + data_weight[1]*loss_data_v + data_weight[2]*loss_data_p
 
-    loss = loss_pde + loss_data
+    ## Boundary Loss
+    loss_BC = bc_weight * circle_loss(u_pred, v_pred, domain)
+
+    loss = loss_pde + loss_data + loss_BC
 
     optimizer.zero_grad()
     loss.backward()
-
-    # for name, param in u_model.named_parameters():
-    #     if param.grad is not None:
-    #         print(f"{name} grad norm: {param.grad.norm().item():.2e}")
-    #     else:
-    #         print(f"{name} grad is None!")
-
-    # for name, param in P_model.named_parameters():
-    #     if param.grad is not None:
-    #         print(f"{name} grad norm: {param.grad.norm().item():.2e}")
-    #     else:
-    #         print(f"{name} grad is None!")
-
-    # print(f"rho grad: {rho.grad}")
-    # print(f"vis grad: {vis.grad}")
-
     optimizer.step()
 
     loss_list.append(loss.item())
@@ -144,8 +132,8 @@ while epoch < num_epochs:
     vis_list.append(vis.item())
 
     if epoch % 1000 == 0:
-        print('EPOCH : %6d/%6d | Loss_PDE : %5.4f| Loss_DATA : %5.4f | RHO : %.4f | VIS : %.6f' \
-                %(epoch, num_epochs, loss_pde.item(), loss_data.item(), rho.item(), vis.item()))
+        print('EPOCH : %6d/%6d | Loss_PDE : %5.4f| Loss_DATA : %5.4f | Loss_BC : %5.4f | RHO : %.4f | VIS : %.6f' \
+                %(epoch, num_epochs, loss_pde.item(), loss_data.item(), loss_BC.item(), rho.item(), vis.item()))
     if epoch > 200:
         wandb.log({
             "total_loss": loss.item(),

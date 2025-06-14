@@ -38,15 +38,13 @@ domain_np = np.loadtxt(domain_path, delimiter=",", skiprows = 1)
 domain_obs_np = np.loadtxt(domain_obs_path, delimiter=",", skiprows = 1)
 data_obs_np = np.loadtxt(data_obs_path, delimiter=",", skiprows = 1)
 
+domain = torch.tensor(domain_np, dtype=torch.float32).to(device).requires_grad_(True)
+domain_obs = torch.tensor(domain_obs_np, dtype=torch.float32).to(device).requires_grad_(True)
+data_obs = torch.tensor(data_obs_np, dtype=torch.float32).to(device).requires_grad_(True)
 
-# Precompute masks for domain
-domain_tensor = torch.tensor(domain_np, dtype=torch.float32).to(device)
-domain_mask_vx, domain_mask_vy, domain_mask_p = compute_masks(domain_tensor)
-
-domain_obs_tensor = torch.tensor(domain_obs_np, dtype=torch.float32).to(device)
-obs_mask_vx, obs_mask_vy, obs_mask_p = compute_masks(domain_obs_tensor)
-
-data_obs_tensor = torch.tensor(data_obs_np, dtype=torch.float32).to(device)
+# pre compute mask tensor 
+domain_mask_vx, domain_mask_vy, domain_mask_p = compute_masks(domain)
+obs_mask_vx, obs_mask_vy, obs_mask_p = compute_masks(domain_obs)
 
 ############################ hyperparameters setup ##################################
 with open("scripts/config.json", "r") as f:
@@ -64,8 +62,8 @@ lr_u = config["lr_u"]
 lr_P = config["lr_P"]
 lr_rho = config["lr_rho"]
 lr_vis = config["lr_vis"]
-u_model = complexPINN(input_dim=2, output_dim=2).to(device)
-P_model = complexPINN(input_dim=2, output_dim=1).to(device)
+u_model = VelocityNet().to(device)
+P_model = PressureNet().to(device)
 loss_fn = nn.MSELoss()
 
 if use_checkpoint:
@@ -75,9 +73,9 @@ if use_checkpoint:
 
 rho = torch.tensor(rho_init).to(device).requires_grad_(True)
 vis = torch.tensor(vis_init).to(device).requires_grad_(True)
-domain = domain_tensor.requires_grad_(True)
-Y_obs = domain_obs_tensor.requires_grad_(True)
-data_obs = data_obs_tensor.requires_grad_(True)
+# domain = domain_tensor.requires_grad_(True)
+# Y_obs = domain_obs_tensor.requires_grad_(True)
+# data_obs = data_obs_tensor.requires_grad_(True)
 
 optimizer = torch.optim.Adam([
     {'params': u_model.parameters(), 'lr': lr_u},
@@ -108,7 +106,7 @@ while epoch < num_epochs:
     loss_pde = loss_PDE_vx + loss_PDE_vy + loss_PDE_cont
 
     ## Data loss
-    u_obs, v_obs, p_obs = constraint_output(u_model, P_model, Y_obs, obs_mask_vx, obs_mask_vy, obs_mask_p)
+    u_obs, v_obs, p_obs = constraint_output(u_model, P_model, domain_obs, obs_mask_vx, obs_mask_vy, obs_mask_p)
     loss_data_u = loss_fn(u_obs, data_obs[:, 0:1])
     loss_data_v = loss_fn(v_obs, data_obs[:, 1:2])
     loss_data_p = loss_fn(p_obs, data_obs[:, 2:3])
@@ -119,20 +117,20 @@ while epoch < num_epochs:
     optimizer.zero_grad()
     loss.backward()
 
-    for name, param in u_model.named_parameters():
-        if param.grad is not None:
-            print(f"{name} grad norm: {param.grad.norm().item():.2e}")
-        else:
-            print(f"{name} grad is None!")
+    # for name, param in u_model.named_parameters():
+    #     if param.grad is not None:
+    #         print(f"{name} grad norm: {param.grad.norm().item():.2e}")
+    #     else:
+    #         print(f"{name} grad is None!")
 
-    for name, param in P_model.named_parameters():
-        if param.grad is not None:
-            print(f"{name} grad norm: {param.grad.norm().item():.2e}")
-        else:
-            print(f"{name} grad is None!")
+    # for name, param in P_model.named_parameters():
+    #     if param.grad is not None:
+    #         print(f"{name} grad norm: {param.grad.norm().item():.2e}")
+    #     else:
+    #         print(f"{name} grad is None!")
 
-    print(f"rho grad: {rho.grad}")
-    print(f"vis grad: {vis.grad}")
+    # print(f"rho grad: {rho.grad}")
+    # print(f"vis grad: {vis.grad}")
 
     optimizer.step()
 

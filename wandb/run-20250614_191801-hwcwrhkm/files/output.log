@@ -1,0 +1,18 @@
+EPOCH :      0/  3001 | Loss_PDE : 0.2760| Loss_DATA : 66.3666 | RHO : 99.9900 | VIS : 0.990000
+Traceback (most recent call last):
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\train.py", line 102, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p)
+                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\scripts\utils.py", line 67, in PDE
+    dvy_xx, _ = derivative(dvy_x, domain)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\juhye\Desktop\Current Files\csmproject\prob2\scripts\utils.py", line 49, in derivative
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\juhye\.pyenv\pyenv-win\versions\3.12.8\Lib\site-packages\torch\autograd\__init__.py", line 496, in grad
+    result = _engine_run_backward(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\juhye\.pyenv\pyenv-win\versions\3.12.8\Lib\site-packages\torch\autograd\graph.py", line 823, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

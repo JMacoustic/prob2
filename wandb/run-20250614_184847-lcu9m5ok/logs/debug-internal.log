@@ -1,0 +1,16 @@
+{"time":"2025-06-14T18:48:47.4882566+09:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"C:\\Users\\juhye\\Desktop\\Current Files\\csmproject\\prob2\\wandb\\run-20250614_184847-lcu9m5ok\\logs\\debug-core.log"}
+{"time":"2025-06-14T18:48:47.8164898+09:00","level":"INFO","msg":"created new stream","id":"lcu9m5ok"}
+{"time":"2025-06-14T18:48:47.8164898+09:00","level":"INFO","msg":"stream: started","id":"lcu9m5ok"}
+{"time":"2025-06-14T18:48:47.8164898+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"lcu9m5ok"}
+{"time":"2025-06-14T18:48:47.8164898+09:00","level":"INFO","msg":"sender: started","stream_id":"lcu9m5ok"}
+{"time":"2025-06-14T18:48:47.8164898+09:00","level":"INFO","msg":"handler: started","stream_id":"lcu9m5ok"}
+{"time":"2025-06-14T18:48:48.0822199+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T18:49:03.1196136+09:00","level":"ERROR","msg":"monitor: error sampling metrics: Incorrect function."}
+{"time":"2025-06-14T18:49:17.7012476+09:00","level":"INFO","msg":"stream: closing","id":"lcu9m5ok"}
+{"time":"2025-06-14T18:49:17.7012476+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T18:49:17.7017554+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T18:49:18.4518797+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T18:49:18.9633519+09:00","level":"INFO","msg":"handler: closed","stream_id":"lcu9m5ok"}
+{"time":"2025-06-14T18:49:18.9633519+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"lcu9m5ok"}
+{"time":"2025-06-14T18:49:18.9639296+09:00","level":"INFO","msg":"sender: closed","stream_id":"lcu9m5ok"}
+{"time":"2025-06-14T18:49:18.9639296+09:00","level":"INFO","msg":"stream: closed","id":"lcu9m5ok"}

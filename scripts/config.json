@@ -2,13 +2,13 @@
   "wandb_name": "newbc_complex_pinn",
   "use_checkpoint": false,
   "checkpoint_path": "weights/model.pt",
-  "rho_init": 10.0,
-  "vis_init": 0.005,
+  "rho_init": 100.0,
+  "vis_init": 1.0,
   "num_epochs": 3001,
   "pde_weight": 1,
   "data_weight": 5,
   "lr_u": 0.05,
-  "lr_P": 0.05,
+  "lr_P": 0.5,
   "lr_rho": 0.01,
-  "lr_vis": 0.00001
+  "lr_vis": 0.01
 }

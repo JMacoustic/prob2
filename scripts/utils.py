@@ -27,6 +27,10 @@ def compute_masks(x):
     mask_vx = [mask_vy, (Ui * (1 - inlet_mask) * wall_mask).unsqueeze(1)]
     mask_p = right.unsqueeze(1)
 
+    # mask_vy = torch.ones((x.shape[0], 1), dtype=torch.float32, device=x.device)
+    # mask_vx = [mask_vy, torch.zeros((x.shape[0], 1), dtype=torch.float32, device=x.device)]
+    # mask_p  = torch.ones((x.shape[0], 1), dtype=torch.float32, device=x.device)
+
     return mask_vx, mask_vy, mask_p
 
 def constraint_output(u_model, P_model, x, mask_vx, mask_vy, mask_p):
@@ -42,7 +46,9 @@ def constraint_output(u_model, P_model, x, mask_vx, mask_vy, mask_p):
 ##############################################################
 
 def derivative(y, t):
-    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), 
+                             create_graph = True,
+                             retain_graph = True)[0]
     df_x = df[:, 0:1]
     df_y = df[:, 1:2]
     return df_x, df_y

@@ -56,6 +56,34 @@ class complexPINN(nn.Module):
         else:
             raise ValueError("Unexpected output dimension")
 
+class VelocityNet(nn.Module):
+    def __init__(self, input_dim=2, hidden_dim=256):
+        super(VelocityNet, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.Tanh(),
+            nn.Linear(hidden_dim, 2)  # vx, vy
+        )
+
+    def forward(self, x):
+        x = x.float()
+        out = self.net(x)
+        vx, vy = out[:, 0:1], out[:, 1:2]
+        return vx, vy
+
+class PressureNet(nn.Module):
+    def __init__(self, input_dim=2, hidden_dim=256):
+        super(PressureNet, self).__init__()
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, hidden_dim),
+            nn.Tanh(),
+            nn.Linear(hidden_dim, 1)  # p
+        )
+
+    def forward(self, x):
+        x = x.float()
+        p = self.net(x)
+        return p
 
 
 

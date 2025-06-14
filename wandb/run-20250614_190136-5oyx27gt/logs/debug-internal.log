@@ -1,0 +1,16 @@
+{"time":"2025-06-14T19:01:36.5254946+09:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"C:\\Users\\juhye\\Desktop\\Current Files\\csmproject\\prob2\\wandb\\run-20250614_190136-5oyx27gt\\logs\\debug-core.log"}
+{"time":"2025-06-14T19:01:36.8500994+09:00","level":"INFO","msg":"created new stream","id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:36.8500994+09:00","level":"INFO","msg":"stream: started","id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:36.8500994+09:00","level":"INFO","msg":"handler: started","stream_id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:36.8500994+09:00","level":"INFO","msg":"sender: started","stream_id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:36.8506483+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:37.1828427+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T19:01:52.2260263+09:00","level":"ERROR","msg":"monitor: error sampling metrics: Incorrect function."}
+{"time":"2025-06-14T19:01:57.0102657+09:00","level":"INFO","msg":"stream: closing","id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:57.0102657+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T19:01:57.0110284+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T19:01:57.7599954+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T19:01:58.1276277+09:00","level":"INFO","msg":"handler: closed","stream_id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:58.1276277+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:58.1276277+09:00","level":"INFO","msg":"sender: closed","stream_id":"5oyx27gt"}
+{"time":"2025-06-14T19:01:58.1284264+09:00","level":"INFO","msg":"stream: closed","id":"5oyx27gt"}

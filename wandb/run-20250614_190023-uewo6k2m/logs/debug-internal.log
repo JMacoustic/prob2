@@ -1,0 +1,15 @@
+{"time":"2025-06-14T19:00:23.4305818+09:00","level":"INFO","msg":"stream: starting","core version":"0.19.9","symlink path":"C:\\Users\\juhye\\Desktop\\Current Files\\csmproject\\prob2\\wandb\\run-20250614_190023-uewo6k2m\\logs\\debug-core.log"}
+{"time":"2025-06-14T19:00:23.7507888+09:00","level":"INFO","msg":"created new stream","id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:23.7507888+09:00","level":"INFO","msg":"stream: started","id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:23.7507888+09:00","level":"INFO","msg":"handler: started","stream_id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:23.7507888+09:00","level":"INFO","msg":"writer: Do: started","stream_id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:23.7507888+09:00","level":"INFO","msg":"sender: started","stream_id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:24.004098+09:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T19:00:25.8134159+09:00","level":"INFO","msg":"stream: closing","id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:25.8134159+09:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T19:00:25.8134159+09:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T19:00:26.5253918+09:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T19:00:26.7591169+09:00","level":"INFO","msg":"handler: closed","stream_id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:26.7591169+09:00","level":"INFO","msg":"writer: Close: closed","stream_id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:26.7597646+09:00","level":"INFO","msg":"sender: closed","stream_id":"uewo6k2m"}
+{"time":"2025-06-14T19:00:26.7597646+09:00","level":"INFO","msg":"stream: closed","id":"uewo6k2m"}

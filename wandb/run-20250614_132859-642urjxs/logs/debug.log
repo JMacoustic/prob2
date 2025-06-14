@@ -1,0 +1,22 @@
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_setup.py:_flush():81] Current SDK version is 0.20.1
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_setup.py:_flush():81] Configure stats pid to 7902
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_setup.py:_flush():81] Loading settings from /root/.config/wandb/settings
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_setup.py:_flush():81] Loading settings from /root/prob2/wandb/settings
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_setup.py:_flush():81] Loading settings from environment variables
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_init.py:setup_run_log_directory():703] Logging user logs to /root/prob2/wandb/run-20250614_132859-642urjxs/logs/debug.log
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_init.py:setup_run_log_directory():704] Logging internal logs to /root/prob2/wandb/run-20250614_132859-642urjxs/logs/debug-internal.log
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_init.py:init():831] calling init triggers
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_init.py:init():836] wandb.init called with sweep_config: {}
+config: {'wandb_name': 'newmodel_pinn_6_anotherweight', 'use_checkpoint': True, 'checkpoint_path': 'weights/model_0614_5.pt', 'rho_init': 10.0, 'vis_init': 0.001, 'num_epochs': 50001, 'pde_weight': [0.5, 1.5, 1], 'data_weight': [3, 5, 1], 'lr_u': 0.001, 'lr_P': 0.001, 'lr_rho': 0.002, 'lr_vis': 2e-07, '_wandb': {}}
+2025-06-14 13:28:59,974 INFO    MainThread:7902 [wandb_init.py:init():872] starting backend
+2025-06-14 13:29:00,182 INFO    MainThread:7902 [wandb_init.py:init():875] sending inform_init request
+2025-06-14 13:29:00,185 INFO    MainThread:7902 [wandb_init.py:init():883] backend started and connected
+2025-06-14 13:29:00,186 INFO    MainThread:7902 [wandb_init.py:init():956] updated telemetry
+2025-06-14 13:29:00,191 INFO    MainThread:7902 [wandb_init.py:init():980] communicating run to backend with 90.0 second timeout
+2025-06-14 13:29:00,853 INFO    MainThread:7902 [wandb_init.py:init():1032] starting run threads in backend
+2025-06-14 13:29:00,989 INFO    MainThread:7902 [wandb_run.py:_console_start():2453] atexit reg
+2025-06-14 13:29:00,989 INFO    MainThread:7902 [wandb_run.py:_redirect():2301] redirect: wrap_raw
+2025-06-14 13:29:00,990 INFO    MainThread:7902 [wandb_run.py:_redirect():2370] Wrapping output streams.
+2025-06-14 13:29:00,990 INFO    MainThread:7902 [wandb_run.py:_redirect():2393] Redirects installed.
+2025-06-14 13:29:00,991 INFO    MainThread:7902 [wandb_init.py:init():1078] run started, returning control to user process
+2025-06-14 13:29:20,264 INFO    MsgRouterThr:7902 [mailbox.py:close():129] [no run ID] Closing mailbox, abandoning 1 handles.

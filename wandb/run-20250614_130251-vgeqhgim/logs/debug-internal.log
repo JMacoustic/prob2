@@ -1,0 +1,16 @@
+{"time":"2025-06-14T13:02:51.286584127Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_130251-vgeqhgim/logs/debug-core.log"}
+{"time":"2025-06-14T13:02:51.623373155Z","level":"INFO","msg":"stream: created new stream","id":"vgeqhgim"}
+{"time":"2025-06-14T13:02:51.62340787Z","level":"INFO","msg":"stream: started","id":"vgeqhgim"}
+{"time":"2025-06-14T13:02:51.623420925Z","level":"INFO","msg":"writer: Do: started","stream_id":"vgeqhgim"}
+{"time":"2025-06-14T13:02:51.623427517Z","level":"INFO","msg":"sender: started","stream_id":"vgeqhgim"}
+{"time":"2025-06-14T13:02:51.623439319Z","level":"INFO","msg":"handler: started","stream_id":"vgeqhgim"}
+{"time":"2025-06-14T13:02:51.913901013Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T13:10:14.010614703Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T13:10:14.01069255Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T13:10:15.013531514Z","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading artifact pinn-model","runtime_seconds":1.005009665}],"total_operations":1}}
+{"time":"2025-06-14T13:10:17.125012277Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T13:10:17.509666949Z","level":"INFO","msg":"stream: closing","id":"vgeqhgim"}
+{"time":"2025-06-14T13:10:17.509680304Z","level":"INFO","msg":"handler: closed","stream_id":"vgeqhgim"}
+{"time":"2025-06-14T13:10:17.509689742Z","level":"INFO","msg":"writer: Close: closed","stream_id":"vgeqhgim"}
+{"time":"2025-06-14T13:10:17.509701705Z","level":"INFO","msg":"sender: closed","stream_id":"vgeqhgim"}
+{"time":"2025-06-14T13:10:17.509770104Z","level":"INFO","msg":"stream: closed","id":"vgeqhgim"}

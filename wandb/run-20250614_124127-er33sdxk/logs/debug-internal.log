@@ -1,0 +1,16 @@
+{"time":"2025-06-14T12:41:28.204082628Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_124127-er33sdxk/logs/debug-core.log"}
+{"time":"2025-06-14T12:41:28.531043233Z","level":"INFO","msg":"stream: created new stream","id":"er33sdxk"}
+{"time":"2025-06-14T12:41:28.536240384Z","level":"INFO","msg":"stream: started","id":"er33sdxk"}
+{"time":"2025-06-14T12:41:28.536254381Z","level":"INFO","msg":"sender: started","stream_id":"er33sdxk"}
+{"time":"2025-06-14T12:41:28.536260643Z","level":"INFO","msg":"handler: started","stream_id":"er33sdxk"}
+{"time":"2025-06-14T12:41:28.536265232Z","level":"INFO","msg":"writer: Do: started","stream_id":"er33sdxk"}
+{"time":"2025-06-14T12:41:28.79636235Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T12:48:49.990202463Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T12:48:49.99027465Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T12:48:50.993080977Z","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading artifact pinn-model","runtime_seconds":1.00524403,"subtasks":[{"desc":"model.pt","runtime_seconds":0.04175802,"progress":"477.1KB/477.1KB"}]}],"total_operations":1}}
+{"time":"2025-06-14T12:48:53.182966917Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T12:48:53.765954728Z","level":"INFO","msg":"stream: closing","id":"er33sdxk"}
+{"time":"2025-06-14T12:48:53.765977631Z","level":"INFO","msg":"handler: closed","stream_id":"er33sdxk"}
+{"time":"2025-06-14T12:48:53.765993241Z","level":"INFO","msg":"writer: Close: closed","stream_id":"er33sdxk"}
+{"time":"2025-06-14T12:48:53.766000315Z","level":"INFO","msg":"sender: closed","stream_id":"er33sdxk"}
+{"time":"2025-06-14T12:48:53.766090205Z","level":"INFO","msg":"stream: closed","id":"er33sdxk"}

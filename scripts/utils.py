@@ -44,11 +44,8 @@ def constraint_output(u_model, P_model, x, mask_vx, mask_vy, mask_p):
     return vx, vy, P
 
 ##############################################################
-
 def derivative(y, t):
-    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), 
-                             create_graph = True,
-                             retain_graph = True)[0]
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
     df_x = df[:, 0:1]
     df_y = df[:, 1:2]
     return df_x, df_y

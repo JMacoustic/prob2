@@ -1,0 +1,16 @@
+{"time":"2025-06-14T13:29:46.71076724Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_132946-kehmybxs/logs/debug-core.log"}
+{"time":"2025-06-14T13:29:47.039509011Z","level":"INFO","msg":"stream: created new stream","id":"kehmybxs"}
+{"time":"2025-06-14T13:29:47.039563754Z","level":"INFO","msg":"stream: started","id":"kehmybxs"}
+{"time":"2025-06-14T13:29:47.03955589Z","level":"INFO","msg":"handler: started","stream_id":"kehmybxs"}
+{"time":"2025-06-14T13:29:47.039604592Z","level":"INFO","msg":"sender: started","stream_id":"kehmybxs"}
+{"time":"2025-06-14T13:29:47.039621844Z","level":"INFO","msg":"writer: Do: started","stream_id":"kehmybxs"}
+{"time":"2025-06-14T13:29:47.373742721Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T13:37:09.089636501Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T13:37:09.08970434Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T13:37:10.092253139Z","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading artifact pinn-model","runtime_seconds":1.004439712,"subtasks":[{"desc":"model.pt","runtime_seconds":0.030532088,"progress":"477.1KB/477.1KB"}]}],"total_operations":1}}
+{"time":"2025-06-14T13:37:12.516142894Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T13:37:13.277267287Z","level":"INFO","msg":"stream: closing","id":"kehmybxs"}
+{"time":"2025-06-14T13:37:13.277285541Z","level":"INFO","msg":"handler: closed","stream_id":"kehmybxs"}
+{"time":"2025-06-14T13:37:13.27729532Z","level":"INFO","msg":"writer: Close: closed","stream_id":"kehmybxs"}
+{"time":"2025-06-14T13:37:13.277302373Z","level":"INFO","msg":"sender: closed","stream_id":"kehmybxs"}
+{"time":"2025-06-14T13:37:13.277365713Z","level":"INFO","msg":"stream: closed","id":"kehmybxs"}

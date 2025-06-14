@@ -1,0 +1,13 @@
+EPOCH :      0/  3001 | Loss_PDE : 2890.1421| Loss_DATA : 68.6371 | RHO : 99.9900 | VIS : 0.990000
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 102, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p)
+  File "/root/prob2/scripts/utils.py", line 59, in PDE
+    dvx_x, dvx_y = derivative(vx, domain)
+  File "/root/prob2/scripts/utils.py", line 48, in derivative
+    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/__init__.py", line 412, in grad
+    result = _engine_run_backward(
+  File "/usr/local/lib/python3.10/dist-packages/torch/autograd/graph.py", line 744, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+RuntimeError: Trying to backward through the graph a second time (or directly access saved tensors after they have already been freed). Saved intermediate values of the graph are freed when you call .backward() or autograd.grad(). Specify retain_graph=True if you need to backward through the graph a second time or if you need to access saved tensors after calling backward.

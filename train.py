@@ -38,13 +38,13 @@ domain_np = np.loadtxt(domain_path, delimiter=",", skiprows = 1)
 domain_obs_np = np.loadtxt(domain_obs_path, delimiter=",", skiprows = 1)
 data_obs_np = np.loadtxt(data_obs_path, delimiter=",", skiprows = 1)
 
-domain = torch.tensor(domain_np, dtype=torch.float32).to(device).requires_grad_(True)
-domain_obs = torch.tensor(domain_obs_np, dtype=torch.float32).to(device).requires_grad_(True)
-data_obs = torch.tensor(data_obs_np, dtype=torch.float32).to(device).requires_grad_(True)
+domain_torch = torch.tensor(domain_np, dtype=torch.float32).to(device)
+domain_obs_torch = torch.tensor(domain_obs_np, dtype=torch.float32).to(device)
+data_obs_torch = torch.tensor(data_obs_np, dtype=torch.float32).to(device)
 
 # pre compute mask tensor 
-domain_mask_vx, domain_mask_vy, domain_mask_p = compute_masks(domain)
-obs_mask_vx, obs_mask_vy, obs_mask_p = compute_masks(domain_obs)
+domain_mask_vx, domain_mask_vy, domain_mask_p = compute_masks(domain_torch)
+obs_mask_vx, obs_mask_vy, obs_mask_p = compute_masks(domain_obs_torch)
 
 ############################ hyperparameters setup ##################################
 with open("scripts/config.json", "r") as f:
@@ -56,8 +56,8 @@ checkpoint_path = config["checkpoint_path"]
 rho_init = config["rho_init"]
 vis_init = config["vis_init"]
 num_epochs = config["num_epochs"]
-pde_weight = config["pde_weight"]
-data_weight = config["data_weight"]
+pde_weight = config["pde_weight"]  # list[vx, vy, cont]
+data_weight = config["data_weight"]  # list[vx, vy, P]
 lr_u = config["lr_u"]
 lr_P = config["lr_P"]
 lr_rho = config["lr_rho"]
@@ -95,6 +95,11 @@ best_loss = np.inf
 loss_list = []
 rho_list, vis_list = [], []
 epoch = 0
+
+domain = requires_grad(domain_torch, device)
+domain_obs = requires_grad(domain_obs_torch, device)
+data_obs = requires_grad(data_obs_torch, device)
+
 ############################# training loop ##################################################
 wandb.init(project="pinn-fluid-inference", name=wandb_name, config=config)
 while epoch < num_epochs:
@@ -103,16 +108,16 @@ while epoch < num_epochs:
     loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
     loss_PDE_vy = loss_fn(PDE_vy, torch.zeros_like(PDE_vy))
     loss_PDE_cont = loss_fn(PDE_cont, torch.zeros_like(PDE_cont))
-    loss_pde = loss_PDE_vx + loss_PDE_vy + loss_PDE_cont
+    loss_pde = pde_weight[0]*loss_PDE_vx + pde_weight[1]*loss_PDE_vy + pde_weight[2]*loss_PDE_cont
 
     ## Data loss
     u_obs, v_obs, p_obs = constraint_output(u_model, P_model, domain_obs, obs_mask_vx, obs_mask_vy, obs_mask_p)
     loss_data_u = loss_fn(u_obs, data_obs[:, 0:1])
     loss_data_v = loss_fn(v_obs, data_obs[:, 1:2])
     loss_data_p = loss_fn(p_obs, data_obs[:, 2:3])
-    loss_data = loss_data_u + loss_data_v + loss_data_p
+    loss_data = data_weight[0]*loss_data_u + data_weight[1]*loss_data_v + data_weight[2]*loss_data_p
 
-    loss = pde_weight*loss_pde + data_weight*loss_data
+    loss = loss_pde + loss_data
 
     optimizer.zero_grad()
     loss.backward()

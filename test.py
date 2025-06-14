@@ -6,9 +6,9 @@ from scripts.utils import *
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
 
-u_model = complexPINN(input_dim=2, output_dim=2).to(device)
-P_model = complexPINN(input_dim=2, output_dim=1).to(device)
-checkpoint_path = 'weights/model.pt'
+u_model = VelocityNet().to(device)
+P_model = PressureNet().to(device)
+checkpoint_path = 'weights/model_0614_1.pt'
 checkpoint = torch.load(checkpoint_path, map_location=device)
 u_model.load_state_dict(checkpoint['u_model_state_dict'])
 P_model.load_state_dict(checkpoint['P_model_state_dict'])
@@ -72,4 +72,5 @@ axs[1].legend()
 fig.colorbar(sc, ax=axs[1], label="Pressure")
 
 plt.tight_layout()
+plt.savefig("prediction_results.png", dpi=300)
 plt.show()

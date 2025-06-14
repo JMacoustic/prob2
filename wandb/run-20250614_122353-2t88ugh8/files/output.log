@@ -1,0 +1,8 @@
+EPOCH :      0/  3001 | Loss_PDE : 88.2699| Loss_DATA : 68.6371 | RHO : 99.9900 | VIS : 1.010000
+EPOCH :   1000/  3001 | Loss_PDE : 3009.3616| Loss_DATA : 1096.6541 | RHO : 99.8637 | VIS : 1.047505
+EPOCH :   2000/  3001 | Loss_PDE : 1009.5453| Loss_DATA : 452.6699 | RHO : 99.8637 | VIS : 1.083124
+EPOCH :   3000/  3001 | Loss_PDE : 227.7860| Loss_DATA : 157.8268 | RHO : 99.8637 | VIS : 1.063461
+
+Final learned rho: 99.8637
+Final learned viscosity: 1.063461
+model saved

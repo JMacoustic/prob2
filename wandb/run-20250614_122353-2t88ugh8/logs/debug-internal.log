@@ -1,0 +1,16 @@
+{"time":"2025-06-14T12:23:53.345357169Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_122353-2t88ugh8/logs/debug-core.log"}
+{"time":"2025-06-14T12:23:53.688090568Z","level":"INFO","msg":"stream: created new stream","id":"2t88ugh8"}
+{"time":"2025-06-14T12:23:53.688147636Z","level":"INFO","msg":"stream: started","id":"2t88ugh8"}
+{"time":"2025-06-14T12:23:53.688154199Z","level":"INFO","msg":"writer: Do: started","stream_id":"2t88ugh8"}
+{"time":"2025-06-14T12:23:53.688139721Z","level":"INFO","msg":"handler: started","stream_id":"2t88ugh8"}
+{"time":"2025-06-14T12:23:53.688206618Z","level":"INFO","msg":"sender: started","stream_id":"2t88ugh8"}
+{"time":"2025-06-14T12:23:53.96511307Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T12:24:20.684353677Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T12:24:20.684406847Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T12:24:21.687630346Z","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading artifact pinn-model","runtime_seconds":1.005244458}],"total_operations":1}}
+{"time":"2025-06-14T12:24:23.311926378Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T12:24:24.137006335Z","level":"INFO","msg":"stream: closing","id":"2t88ugh8"}
+{"time":"2025-06-14T12:24:24.137021834Z","level":"INFO","msg":"handler: closed","stream_id":"2t88ugh8"}
+{"time":"2025-06-14T12:24:24.137031382Z","level":"INFO","msg":"writer: Close: closed","stream_id":"2t88ugh8"}
+{"time":"2025-06-14T12:24:24.13704599Z","level":"INFO","msg":"sender: closed","stream_id":"2t88ugh8"}
+{"time":"2025-06-14T12:24:24.137094742Z","level":"INFO","msg":"stream: closed","id":"2t88ugh8"}

@@ -1,0 +1,16 @@
+{"time":"2025-06-14T13:17:56.190690496Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_131755-vpnoumnl/logs/debug-core.log"}
+{"time":"2025-06-14T13:17:56.52457164Z","level":"INFO","msg":"stream: created new stream","id":"vpnoumnl"}
+{"time":"2025-06-14T13:17:56.524602489Z","level":"INFO","msg":"stream: started","id":"vpnoumnl"}
+{"time":"2025-06-14T13:17:56.5246084Z","level":"INFO","msg":"handler: started","stream_id":"vpnoumnl"}
+{"time":"2025-06-14T13:17:56.524629079Z","level":"INFO","msg":"sender: started","stream_id":"vpnoumnl"}
+{"time":"2025-06-14T13:17:56.52468788Z","level":"INFO","msg":"writer: Do: started","stream_id":"vpnoumnl"}
+{"time":"2025-06-14T13:17:56.793964852Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T13:25:17.359217766Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T13:25:17.359268442Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T13:25:18.36167069Z","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading artifact pinn-model","runtime_seconds":1.003894286}],"total_operations":1}}
+{"time":"2025-06-14T13:25:20.919536834Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T13:25:21.475495484Z","level":"INFO","msg":"stream: closing","id":"vpnoumnl"}
+{"time":"2025-06-14T13:25:21.475527745Z","level":"INFO","msg":"handler: closed","stream_id":"vpnoumnl"}
+{"time":"2025-06-14T13:25:21.475541251Z","level":"INFO","msg":"writer: Close: closed","stream_id":"vpnoumnl"}
+{"time":"2025-06-14T13:25:21.475595524Z","level":"INFO","msg":"sender: closed","stream_id":"vpnoumnl"}
+{"time":"2025-06-14T13:25:21.475659765Z","level":"INFO","msg":"stream: closed","id":"vpnoumnl"}

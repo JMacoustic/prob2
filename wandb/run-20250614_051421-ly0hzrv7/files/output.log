@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 104, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain)
+  File "/root/prob2/scripts/utils.py", line 50, in PDE
+    vx, vy, p = constraint_output(u_model, P_model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+NameError: name 'domain_mask_vx' is not defined

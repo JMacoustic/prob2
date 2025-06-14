@@ -1,0 +1,16 @@
+{
+  "os": "Linux-5.15.0-1070-nvidia-x86_64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2025-06-14T06:17:02.163492Z",
+  "program": "/root/prob2/train.py",
+  "codePath": "train.py",
+  "git": {
+    "remote": "https://github.com/JMacoustic/prob2.git",
+    "commit": "bfb78043b8fc6715a4e830492fac97aa1512447d"
+  },
+  "email": "juhyeun2001@snu.ac.kr",
+  "root": "/root/prob2",
+  "host": "workspace-ey5pacx2dlwy-0",
+  "executable": "/usr/bin/python",
+  "codePathLocal": "train.py"
+}

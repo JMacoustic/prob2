@@ -1,0 +1,28 @@
+domain shape: torch.Size([4711, 2])
+x shape: torch.Size([])
+Traceback (most recent call last):
+  File "/root/prob2/train.py", line 105, in <module>
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+  File "/root/prob2/scripts/utils.py", line 51, in PDE
+    vx, vy, p = constraint_output(u_model, P_model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
+  File "/root/prob2/scripts/utils.py", line 30, in constraint_output
+    vx, vy = u_model(x)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/root/prob2/scripts/models.py", line 45, in forward
+    output = self.net(x)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/container.py", line 217, in forward
+    input = module(input)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1532, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/module.py", line 1541, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.10/dist-packages/torch/nn/modules/linear.py", line 116, in forward
+    return F.linear(input, self.weight, self.bias)
+RuntimeError: both arguments to linear need to be at least 1D, but they are 0D and 2D

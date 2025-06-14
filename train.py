@@ -8,6 +8,8 @@ import torch.nn as nn
 import pandas as pd
 from copy import deepcopy
 from scripts.models import *
+from scripts.utils import *
+import json
 
 warnings.filterwarnings("ignore")
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
@@ -26,117 +28,46 @@ def set_seed(seed):
 
 set_seed(42)
 
+############### domain setup and boundary conditions###########################
+
 domain_path = "data/domain.csv"
 domain_obs_path = "data/domain_obs.csv"
 data_obs_path = "data/measurements_obs.csv"
 
-domain = np.loadtxt(domain_path, delimiter=",", skiprows = 1)
-domain_obs = np.loadtxt(domain_obs_path, delimiter=",", skiprows = 1)
-data_obs = np.loadtxt(data_obs_path, delimiter=",", skiprows = 1)
+domain_np = np.loadtxt(domain_path, delimiter=",", skiprows = 1)
+domain_obs_np = np.loadtxt(domain_obs_path, delimiter=",", skiprows = 1)
+data_obs_np = np.loadtxt(data_obs_path, delimiter=",", skiprows = 1)
 
-###############boundary conditions###########################
-Lout = 1.5
-Lin = -0.5
-h = 0.5
-r = 0.075
-Ui = 5
-
-# circle = torch.exp(-((domain[:, 0]**2 + domain[:, 1]**2  - r**2) / 0.01)**2)
-# top = h - domain[:, 1]
-# bottom = domain[:, 1] - (- h) 
-# left_y = domain[:, 0] - Lin
-# left_x = Ui + Lin - domain[:, 0]
-# right = Lout - domain[:, 0]
-
-def compute_masks(x):
-    x0 = x[:, 0]
-    x1 = x[:, 1]
-
-    circle = torch.exp(-((x0**2 + x1**2 - r**2)/0.01)**2)
-    top = h - x1
-    bottom = x1 + h
-    left_y = x0 - Lin
-    left_x = Lin - x0
-    right = Lout - x0
-
-    return (
-        (circle * top * bottom).unsqueeze(1),                    # mask_vx
-        (circle * top * bottom * left_y).unsqueeze(1),          # mask_vy
-        right.unsqueeze(1),                                     # mask_p
-        left_x.unsqueeze(1),                                    # left_x
-    )
 
 # Precompute masks for domain
-domain_tensor = torch.tensor(domain, dtype=torch.float32).to(device)
+domain_tensor = torch.tensor(domain_np, dtype=torch.float32).to(device)
 domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x = compute_masks(domain_tensor)
 
-domain_obs_tensor = torch.tensor(domain_obs, dtype=torch.float32).to(device)
+domain_obs_tensor = torch.tensor(domain_obs_np, dtype=torch.float32).to(device)
 obs_mask_vx, obs_mask_vy, obs_mask_p, obs_left_x = compute_masks(domain_obs_tensor)
 
-def constraint_output(u_model, P_model, x, mask_vx, mask_vy, mask_p, left_x):
-    vx, vy = u_model(x)
-    P = P_model(x)
+data_obs_tensor = torch.tensor(data_obs_np, dtype=torch.float32).to(device)
 
-    vx = mask_vx * (left_x * vx + Ui)
-    vy = mask_vy * vy
-    P  = mask_p * P
+############################ hyperparameters setup ##################################
+with open("scripts/config.json", "r") as f:
+    config = json.load(f)
 
-    return vx, vy, P
-
-##############################################################
-
-def derivative(y, t):
-    df = torch.autograd.grad(y, t, grad_outputs = torch.ones_like(y).to(device), create_graph = True)[0]
-    df_x = df[:, 0:1]
-    df_y = df[:, 1:2]
-    return df_x, df_y
-
-def requires_grad(x):
-    return torch.tensor(x, dtype = torch.float32, requires_grad = True).to(device)
-
-def PDE(u_model, P_model, domain):
-    vx, vy, p = constraint_output(u_model, P_model, domain, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
-
-    dvx_x, dvx_y = derivative(vx, domain)
-    dvx_xx, _ = derivative(dvx_x, domain)
-    _, dvx_yy =  derivative(dvx_y, domain)
-
-    dvy_x, dvy_y = derivative(vy, domain)
-    dvy_xx, _ = derivative(dvy_x, domain)
-    _, dvy_yy = derivative(dvy_y, domain)
-
-    dp_x, dp_y = derivative(p, domain)
-
-    pde_vx = rho * (vx * dvx_x + vy * dvx_y) + dp_x - vis * (dvx_xx + dvx_yy)
-    pde_vy = rho * (vx * dvy_x + vy * dvy_y) + dp_y - vis * (dvy_xx + dvy_yy)
-    pde_cont = dvx_x + dvy_y
-
-    return pde_vx, pde_vy, pde_cont
-
-
-##############################################################
-
-# Load checkpoint and set optimizer
-wandb_name = "fixed_complex_pinn"
-
-use_checkpoint = False
-checkpoint_path = 'weights/model.pt'
-
-rho_init = 10.
-vis_init = 0.005
-
-num_epochs = 50001
-pde_weight = 1
-data_weight = 5
-lr_u = 5e-2
-lr_P = 5e-2
-lr_rho = 1e-2
-lr_vis = 1e-5
+wandb_name = config["wandb_name"]
+use_checkpoint = config["use_checkpoint"]
+checkpoint_path = config["checkpoint_path"]
+rho_init = config["rho_init"]
+vis_init = config["vis_init"]
+num_epochs = config["num_epochs"]
+pde_weight = config["pde_weight"]
+data_weight = config["data_weight"]
+lr_u = config["lr_u"]
+lr_P = config["lr_P"]
+lr_rho = config["lr_rho"]
+lr_vis = config["lr_vis"]
 u_model = complexPINN(input_dim=2, output_dim=2).to(device)
 P_model = complexPINN(input_dim=2, output_dim=1).to(device)
 loss_fn = nn.MSELoss()
 
-##############################################################
 if use_checkpoint:
     checkpoint = torch.load(checkpoint_path, map_location=device)
     rho_init = checkpoint['density']
@@ -144,6 +75,9 @@ if use_checkpoint:
 
 rho = torch.tensor(rho_init).to(device).requires_grad_(True)
 vis = torch.tensor(vis_init).to(device).requires_grad_(True)
+domain = domain_tensor.requires_grad_(True)
+Y_obs = domain_obs_tensor.requires_grad_(True)
+data_obs = data_obs_tensor.requires_grad_(True)
 
 optimizer = torch.optim.Adam([
     {'params': u_model.parameters(), 'lr': lr_u},
@@ -157,33 +91,17 @@ if use_checkpoint:
     P_model.load_state_dict(checkpoint['P_model_state_dict'])
     optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
 
+
+##################################### training setup ########################################
 best_loss = np.inf
 loss_list = []
 rho_list, vis_list = [], []
-
-## Requires grad
-domain = requires_grad(domain)
-Y_obs = requires_grad(domain_obs)
-data_obs = requires_grad(data_obs)
-
-## wandb
-wandb.init(project="pinn-fluid-inference", name=wandb_name, config={
-    "epochs": num_epochs,
-    "lr_u": lr_u,
-    "lr_P": lr_P,
-    "lr_rho": lr_rho,
-    "lr_vis": lr_vis,
-    "pde_weight": pde_weight,
-    "data_weight": data_weight,
-    "rho_init": rho_init,
-    "vis_init": vis_init,
-    "use_checkpoint": use_checkpoint
-})
-
 epoch = 0
+############################# training loop ##################################################
+wandb.init(project="pinn-fluid-inference", name=wandb_name, config=config)
 while epoch < num_epochs:
     ## PDE loss
-    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain)
+    PDE_vx, PDE_vy, PDE_cont = PDE(u_model, P_model, domain, rho, vis, domain_mask_vx, domain_mask_vy, domain_mask_p, domain_left_x)
     loss_PDE_vx = loss_fn(PDE_vx, torch.zeros_like(PDE_vx))
     loss_PDE_vy = loss_fn(PDE_vy, torch.zeros_like(PDE_vy))
     loss_PDE_cont = loss_fn(PDE_cont, torch.zeros_like(PDE_cont))
@@ -228,32 +146,7 @@ while epoch < num_epochs:
 
 
 
-##############################################################
-
-# with torch.no_grad():
-#     vx_pred, vy_pred, p_pred = model(domain)
-
-# vx_pred = vx_pred.cpu().numpy()
-# vy_pred = vy_pred.cpu().numpy()
-# p_pred = p_pred.cpu().numpy()
-# domain_np = domain.detach().cpu().numpy()
-
-# plt.figure(figsize=(6, 6))
-# plt.quiver(domain_np[:, 0], domain_np[:, 1], vx_pred[:, 0], vy_pred[:, 0], scale=5)
-# plt.title("Predicted Velocity Field")
-# plt.xlabel("x")
-# plt.ylabel("y")
-# plt.axis('scaled')
-# plt.show()
-
-# plt.figure(figsize=(6, 6))
-# sc = plt.scatter(domain_np[:, 0], domain_np[:, 1], c=p_pred[:, 0], cmap='viridis', s=5)
-# plt.colorbar(sc, label="Pressure")
-# plt.title("Predicted Pressure Field")
-# plt.xlabel("x")
-# plt.ylabel("y")
-# plt.axis('scaled')
-# plt.show()
+############################### learned result #####################################
 
 print(f"\nFinal learned rho: {rho.item():.4f}")
 print(f"Final learned viscosity: {vis.item():.6f}")

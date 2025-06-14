@@ -1,0 +1,15 @@
+{"time":"2025-06-14T06:19:49.305978556Z","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/root/prob2/wandb/run-20250614_061949-oq63tapa/logs/debug-core.log"}
+{"time":"2025-06-14T06:19:49.636715887Z","level":"INFO","msg":"stream: created new stream","id":"oq63tapa"}
+{"time":"2025-06-14T06:19:49.636750742Z","level":"INFO","msg":"stream: started","id":"oq63tapa"}
+{"time":"2025-06-14T06:19:49.636767994Z","level":"INFO","msg":"writer: Do: started","stream_id":"oq63tapa"}
+{"time":"2025-06-14T06:19:49.636805736Z","level":"INFO","msg":"handler: started","stream_id":"oq63tapa"}
+{"time":"2025-06-14T06:19:49.636782422Z","level":"INFO","msg":"sender: started","stream_id":"oq63tapa"}
+{"time":"2025-06-14T06:19:49.938992214Z","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-14T06:19:50.116365095Z","level":"INFO","msg":"stream: closing","id":"oq63tapa"}
+{"time":"2025-06-14T06:19:50.116395111Z","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-14T06:19:50.116421691Z","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-14T06:19:51.143505508Z","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-14T06:19:51.442353099Z","level":"INFO","msg":"handler: closed","stream_id":"oq63tapa"}
+{"time":"2025-06-14T06:19:51.44238578Z","level":"INFO","msg":"writer: Close: closed","stream_id":"oq63tapa"}
+{"time":"2025-06-14T06:19:51.442398424Z","level":"INFO","msg":"sender: closed","stream_id":"oq63tapa"}
+{"time":"2025-06-14T06:19:51.442456193Z","level":"INFO","msg":"stream: closed","id":"oq63tapa"}

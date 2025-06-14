@@ -1,5 +1,6 @@
 from torch.nn import Linear, Tanh
 import torch.nn as nn
+import torch
 
 class PINN(nn.Module):
     def __init__(self):
@@ -54,3 +55,17 @@ class complexPINN(nn.Module):
             return p
         else:
             raise ValueError("Unexpected output dimension")
+
+
+
+
+# Dummy model that outputs all ones
+class DummyModel1(nn.Module):
+    def forward(self, x):
+        N = x.shape[0]
+        return torch.ones((N, 1), device=x.device)  # Return tensor of ones
+
+class DummyModel2(nn.Module):
+    def forward(self, x):
+        N = x.shape[0]
+        return torch.ones((N, 1), device=x.device), torch.zeros((N, 1), device=x.device)
